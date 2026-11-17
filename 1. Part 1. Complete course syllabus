@@ -1,0 +1,752 @@
+1. Understand why version control is required in software development.
+2. Work confidently with Git from the command line.
+3. Create and manage repositories.
+4. Understand commits, branches, merging and conflicts.
+5. Work with GitHub repositories.
+6. Collaborate with other developers.
+7. Use Pull Requests, Forks and Issues.
+8. Resolve real-world Git problems.
+9. Understand GitHub security and best practices.
+10. Integrate GitHub with Jenkins and CI/CD pipelines.
+
+# Complete Git and GitHub 
+# Part 1. Complete course syllabus
+Divided the course into 12 modules. Each module contains concepts, command-line demonstrations, practical exercises, and real-world applications.
+
+## Module 1 – Introduction to Version Control Systems
+First,  understand WHY Git exists.
+
+Topics:
+1. What is software development?
+2. Problems faced when multiple developers work on the same project.
+3. What is Version Control?
+4. Why do we need Version Control Systems?
+5. What is a Version Control System (VCS)?
+6. Types of Version Control Systems\:
+   
+   - Local Version Control System
+   - Centralized Version Control System (CVCS)
+   - Distributed Version Control System (DVCS)
+7. What is Git?
+8. History and evolution of Git.
+9. Advantages of Git.
+10. Git vs GitHub.
+11. Git vs SVN.
+12. Git terminology.
+
+Suppose you are developing a bakery website.
+
+Initially, you have:
+bakery/
+    index.html
+
+You make changes every day.
+
+After some time, you have:
+
+index-final.html
+index-final-new.html
+index-final-latest.html
+index-final-latest2.html
+
+Which file contains the correct code?
+
+This is exactly the type of problem that version control solves.
+
+Git maintains the history of your project so you can track changes and return to earlier versions.
+
+## Module 2 – Git Architecture and Installation
+
+Topics\:
+
+1. Git architecture.
+2. How Git works internally.
+3. Git installation on Windows.
+4. Git installation on Ubuntu/Linux.
+5. Git Bash vs PowerShell vs Linux Terminal.
+6. Git configuration.
+7. Global, local and system configurations.
+8. Git identity: username and email.
+9. Git help and documentation.
+10. Understanding Git repositories.
+
+Important commands\:
+
+git --version
+git config --global user.name "Student Name"
+git config --global user.email "student@example.com"
+git config --list
+git config --global --list
+git help
+
+## Module 3 – Git Fundamentals and Basic Commands
+
+This is where practical teaching begins.
+
+Topics\:
+
+1. What is a repository?
+2. Working directory.
+3. Staging area.
+4. Local repository.
+5. Git initialization.
+6. Creating files and folders.
+7. Tracking files.
+8. Understanding file status.
+9. Staging changes.
+10. Committing changes.
+11. Viewing commit history.
+12. Understanding commit messages.
+
+Important commands\:
+
+git init
+git status
+git add
+git commit
+git log
+git log --oneline
+git diff
+git diff --staged
+git show
+
+## Module 4 – Understanding Git Internals
+
+Topics\:
+
+1. What is a Git object?
+2. Blob objects.
+3. Tree objects.
+4. Commit objects.
+5. HEAD pointer.
+6. Branch references.
+7. Git snapshots.
+8. Git hashing and object identification.
+9. The `.git` directory.
+10. Git garbage collection – introduction.
+
+Commands\:
+
+ls -la
+ls .git
+git cat-file -t HEAD
+git cat-file -p HEAD
+git rev-parse HEAD
+git show HEAD
+
+## Module 5 – Working with Git History
+
+Topics\:
+
+1. Understanding commit history.
+2. Viewing previous commits.
+3. Comparing changes.
+4. Undoing changes.
+5. Restoring files.
+6. Reverting commits.
+7. Resetting commits.
+8. Soft, mixed and hard reset.
+9. Amending the last commit.
+10. Recovering lost commits using reflog.
+
+Commands\:
+
+git log
+git show
+git diff
+git restore
+git revert
+git reset --soft
+git reset --mixed
+git reset --hard
+git commit --amend
+git reflog
+
+## Module 6 – Branching and Merging
+
+This is one of the most important modules.
+
+Topics\:
+
+1. What is a branch?
+2. Why do developers use branches?
+3. Main/master branch.
+4. Feature branches.
+5. Creating branches.
+6. Switching branches.
+7. Renaming branches.
+8. Deleting branches.
+9. Branch merging.
+10. Fast-forward merge.
+11. Three-way merge.
+12. Merge conflicts.
+13. Resolving merge conflicts.
+14. Detached HEAD state.
+15. Introduction to Git rebase.
+16. Merge vs Rebase.
+
+Commands\:
+
+git branch
+git branch feature-login
+git switch feature-login
+git switch -c feature-payment
+git branch -m
+git branch -d
+git merge
+git merge --abort
+git rebase
+git status
+
+## Module 7 – GitHub Fundamentals
+
+
+Topics\:
+
+1. What is GitHub?
+2. GitHub vs Git.
+3. Creating a GitHub account.
+4. Understanding the GitHub dashboard.
+5. Creating repositories.
+6. Public vs Private repositories.
+7. Repository structure.
+8. README.md.
+9. Markdown language.
+10. Creating `.gitignore`\.
+11. GitHub repository settings.
+12. Repository visibility.
+13. GitHub profile and contribution graph.
+
+## Module 8 – Connecting Local Git with GitHub
+
+Topics\:
+
+1. What is a remote repository?
+2. Local vs remote repository.
+3. Understanding origin.
+4. HTTPS vs SSH authentication.
+5. Personal Access Tokens (PAT).
+6. SSH key generation.
+7. Adding SSH public keys to GitHub.
+8. Pushing code.
+9. Pulling code.
+10. Cloning repositories.
+11. Fetching changes.
+12. Understanding upstream branches.
+13. Tracking branches.
+
+Commands\:
+
+git remote -v
+git remote add origin <repository-url>
+git clone <repository-url>
+git push
+git pull
+git fetch
+git push -u origin main
+git branch -a
+
+## Module 9 – Advanced GitHub Collaboration
+
+Topics\:
+
+1. What is collaborative development?
+2. Multiple developers working on one project.
+3. Forking repositories.
+4. Cloning forked repositories.
+5. Upstream repository.
+6. Pull Requests (PR).
+7. Code reviews.
+8. Review comments.
+9. Approving Pull Requests.
+10. Merging Pull Requests.
+11. GitHub Issues.
+12. Labels and milestones.
+13. Managing project contributions.
+14. Open-source contribution workflow.
+
+## Module 10 – Advanced Git Techniques
+
+Topics\:
+
+1. Git stash.
+2. Git cherry-pick.
+3. Git tags.
+4. Lightweight vs annotated tags.
+5. Git rebase.
+6. Interactive rebase.
+7. Git bisect.
+8. Git blame.
+9. Git clean.
+10. Git archive.
+11. Git hooks.
+12. Git submodules.
+13. Git LFS.
+14. Git aliases.
+
+Important commands\:
+
+git stash
+git stash list
+git stash pop
+git cherry-pick
+git tag
+git tag -a
+git bisect
+git blame
+git clean
+git submodule
+
+## Module 11 – Git Security and Best Practices
+
+Especially important for DevSecOps students.
+
+Topics\:
+
+1. What is `.gitignore`?
+2. Why should secrets never be committed?
+3. Password and API-key exposure.
+4. Environment variables.
+5. GitHub secret scanning.
+6. Push protection.
+7. Branch protection rules.
+8. Signed commits.
+9. Secure SSH authentication.
+10. Repository access control.
+11. Least privilege principle.
+12. Removing accidentally committed secrets.
+13. Why deleting a secret from a file does not remove it from Git history.
+
+## Module 12 – GitHub Actions and CI/CD Integration
+
+Topics\:
+
+1. What is GitHub Actions?
+2. What is workflow automation?
+3. What is a workflow?
+4. Understanding YAML workflow files.
+5. Events and triggers.
+6. Jobs and steps.
+7. GitHub-hosted runners.
+8. Self-hosted runners.
+9. Environment variables.
+10. GitHub Secrets.
+11. Building a CI pipeline.
+12. Running automated tests.
+13. Building Docker images.
+14. Deploying applications.
+15. GitHub Actions vs Jenkins.
+
+# Part 2. Complete hands-on practical roadmap
+
+| Lab | Practical title | Main learning |
+|--------|--------|--------|
+| 01 | Install and configure Git | Installation and identity |
+| 02 | Create your first Git repository | `git init` |
+| 03 | Track and commit files | Add, status, commit |
+| 04 | Understand Git history | Log, show, diff |
+| 05 | Modify and restore files | Restore, reset |
+| 06 | Create and manage branches | Branch, switch |
+| 07 | Merge two branches | Merge and conflicts |
+| 08 | Create a GitHub repository | GitHub basics |
+| 09 | Push local code to GitHub | Remote and push |
+| 10 | Clone a GitHub repository | Clone and pull |
+| 11 | Collaborate with two developers | Fetch and push |
+| 12 | Fork and Pull Request | Open-source workflow |
+| 13 | Resolve merge conflicts | Conflict resolution |
+| 14 | Use Git stash and cherry-pick | Advanced Git |
+| 15 | Tags and releases | Version management |
+| 16 | Git security practical | `.gitignore` and secret protection |
+| 17 | GitHub Issues and Projects | Project management |
+| 18 | GitHub Actions | Automated CI |
+| 19 | GitHub Actions with Docker | Container CI |
+| 20 | GitHub + Jenkins integration | DevSecOps CI/CD |
+
+# Part 3. Module 1 in detail
+
+## Lesson 1: What is Version Control?
+### 1\. First, understand the problem
+
+Imagine that you have five developers working on one website.
+
+- Developer A is working on the login page.
+- Developer B is working on the registration page.
+- Developer C is working on the payment page.
+- Developer D is working on the home page.
+- Developer E is working on the database connection.
+
+Now imagine all five developers are editing the same project without any version control.
+
+What can happen?
+
+1. One developer may overwrite another developer's code.
+2. Nobody knows who changed a particular line.
+3. It becomes difficult to recover deleted code.
+4. Developers may have different versions of the project.
+5. Combining everyone's work becomes difficult.
+
+Now the question is?
+
+"If your friend accidentally deletes 100 lines of your project, how will you recover them?"
+
+This question introduces the need for Version Control.
+
+### 2\. What is Version Control?
+
+Version Control is a system that records changes made to files over time.
+
+It helps developers\:
+
+- Track who made changes.
+- Understand what was changed.
+- Identify when changes were made.
+- Restore earlier versions.
+- Collaborate with other developers.
+
+Think of it like the history feature in a document editor, but designed for software development projects.
+
+### 3\. Types of Version Control Systems
+
+There are three major types.
+
+A. Local Version Control System
+
+In this system, version history is maintained on one computer.
+Example\:
+Project
+   |
+   |--- Version 1
+   |--- Version 2
+   |--- Version 3
+   |--- Version 4
+
+Advantages\:
+
+- Simple to understand.
+- No network required.
+
+Disadvantages\:
+
+- Difficult to collaborate.
+- If the computer fails, history may be lost.
+- Not suitable for large development teams.
+
+B. Centralized Version Control System (CVCS)
+In this system, a central server maintains the repository.
+
+Example: SVN (Subversion).
+
+              Central Server
+              (Repository)
+                   |
+          ---------------------
+          |        |          |
+       Dev A     Dev B      Dev C
+
+All developers connect to a central server to access and update project files.
+
+Advantages\:
+
+- Centralized management.
+- Easier collaboration.
+- Central repository contains project history.
+
+Disadvantages\:
+
+- Central server failure affects the team.
+- Network connectivity is generally required to access central repository operations.
+
+C. Distributed Version Control System (DVCS)
+This is where Git comes in.
+Every developer has a complete local copy of the repository, including its history.
+
+Example\:
+              GitHub Remote
+                   |
+          ---------------------
+          |        |          |
+       Dev A     Dev B      Dev C
+       Local     Local      Local
+       Repo      Repo       Repo
+
+Each developer can:
+
+- Work offline.
+- Create commits locally.
+- Create branches.
+- View project history.
+- Later synchronize changes with the remote repository.
+
+Important point: Git is distributed. GitHub is a hosting and collaboration platform for Git repositories. Git can work without GitHub.
+
+## 4\. What is Git?
+
+Git is A free, open-source distributed version control system used to track changes in source code and other files.
+
+Official website: [git-scm.com](https://git-scm.com/)
+
+Git was created by Linus Torvalds in 2005, initially to support Linux kernel development.
+
+Why was Git created?
+
+The Linux kernel development team needed a fast, distributed, and reliable version control system.
+
+Git was designed to provide:
+
+- Speed.
+- Distributed development.
+- Data integrity.
+- Branching and merging.
+- Reliable history management.
+
+## 5\. What is GitHub?
+
+GitHub - A cloud-based platform for hosting Git repositories and collaborating on software projects.
+
+Official website: [github.com](https://github.com/)
+
+GitHub provides features such as\:
+
+- Repository hosting.
+- Pull Requests.
+- Code reviews.
+- Issues.
+- Project management.
+- GitHub Actions.
+- Security scanning.
+- Team collaboration.
+
+### Git vs GitHub – make sure students understand this
+
+| Git | GitHub |
+| Version control system | Online hosting platform |
+| Installed on computer | Accessed through web or Git clients |
+| Works offline | Online collaboration platform |
+| Tracks file changes | Hosts Git repositories |
+| Command-line tool | Web interface and developer services |
+| Developed by Linus Torvalds | Launched in 2008 |
+
+##2A simple analogy:
+
+Git is like a camera that records every change in your project.
+
+GitHub is like an online platform where you can store and share that project with other people.
+
+# Part 4. First classroom practical
+
+(Practical 01) - Install and configure Git
+
+We will use Windows PowerShell and Ubuntu/Linux terminals for demonstrations. These will also fit our existing DevSecOps teaching environment.
+
+### Step 1. Check whether Git is installed
+
+On Windows PowerShell:
+On Ubuntu:
+git --version
+
+If Git is installed, you will see a version number.
+
+### Step 2. Install Git
+
+Windows\:
+
+Download from: - [Git for Windows – Official Download](https://git-scm.com/downloads/win)
+
+Ubuntu - 
+
+sudo apt update
+sudo apt install git -y
+
+Verify\:
+git --version
+
+### Step 3. Configure Git identity
+
+Explain to students:
+
+Whenever we create a Git commit, Git records the author's name and email address.
+
+We configure these details before creating commits.
+
+git config --global user.name "Kunwar Rajesh"
+git config --global user.email "kunwarrajesh2407@gmail.com"
+
+### Step 4. Verify configuration
+git config --list
+
+Expected output will include\:
+user.name=Kunwar Rajesh
+user.email=kunwarrajesh2407@gmail.com
+
+### Step 5. Understand configuration levels
+
+Git has three important configuration levels:
+
+| Level | Meaning |
+| System | Applies to all users of the system |
+| Global | Applies to the current operating-system user |
+| Local | Applies only to the current repository |
+
+Commands\:
+git config --system
+git config --global
+git config --local
+
+For actually viewing the settings:
+
+git config --global --list
+git config --local --list
+
+Local settings override global settings, and global settings override system settings.
+
+### Step 6. Create your first project
+
+mkdir git-training
+cd git-training
+
+Create an HTML file.
+
+On Ubuntu:
+nano index.html
+
+On PowerShell:
+notepad index.html
+
+Add this content:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Git Project</title>
+</head>
+<body>
+    <h1>Welcome to Git Training</h1>
+    <p>Learning Version Control System.</p>
+</body>
+</html>
+
+
+Save the file.
+
+At this point, we have created a project, but Git is not tracking it yet.
+
+That leads us to our next practical: initializing a Git repository.
+### Step 7. Initialize Git
+
+Run\:
+git init
+
+Expected output:
+Initialized empty Git repository
+
+Explain\:
+
+The `git init` command initializes a new Git repository inside the current project directory.
+
+Git creates a hidden directory named `.git'.
+
+Check it:
+ls -la
+
+On PowerShell:
+
+Get-ChildItem -Force
+
+You should see\:
+git-training/
+    .git/
+    index.html
+
+**Important\:** The `.git` directory is the heart of your Git repository. It stores configuration, references, objects and other information needed to maintain the project's history.
+
+### Step 8. Check repository status
+
+git status
+We will see that `index.html` is an untracked file.
+
+Explain the meaning\:
+An untracked file is a file that exists in the working directory but has not yet been added to Git's tracking system.
+
+### Step 9. Add the file to the staging area
+git add index.html
+
+Check again:
+git status
+
+Now the file is staged and ready to be committed.
+
+### Step 10. Create your first commit
+
+git commit -m "Initial commit"
+
+Explain\:
+
+A commit is a recorded snapshot of the project's tracked content at a particular point in time.
+
+### Step 11. Check commit history
+git log
+
+For a compact view\:
+git log --oneline
+
+Congratulations\! Students have created their first Git repository and recorded their first commit.
+
+# Part 5. The most important concept – Git's three areas
+Git works with three important areas\:
+
+1\. Working Directory
+This is where developers create, edit and delete files.
+Example\:
+
+We open `index.html` and change the heading.
+
+2\. Staging Area
+This is where you select the changes that should be included in the next commit.
+
+Command\:
+git add index.html
+
+3\. Local Repository
+
+This is where Git stores the committed project history.
+
+Command\:
+git commit -m "Updated homepage"
+
+The complete workflow\:
+
+Working Directory*
+
+Create or modify files
+
+(git add)
+Staging Area
+
+Select changes for the next commit
+
+(git commit)
+Local Repository*
+
+Save a permanent commit in project history
+"Git does not automatically commit every change. We first select the changes using `git add`, and then save them using `git commit. This distinction is fundamental to understanding Git.
+
+# Part 6. How we will conduct the complete training
+
+I suggest teaching one module at a time, in this order\:
+
+| Teaching session | Main focus |
+| 1 | Version Control and Git introduction |
+| 2 | Git installation, configuration and architecture |
+| 3 | Git init, add, status and commit |
+| 4 | Git history, diff and restore |
+| 5 | Reset, revert and reflog |
+| 6 | Branching fundamentals |
+| 7 | Merging and conflict resolution |
+| 8 | GitHub introduction and repositories |
+| 9 | Remote repositories, push, pull and clone |
+| 10 | Forks and Pull Requests |
+| 11 | Collaboration and advanced Git |
+| 12 | Git security and best practices |
+| 13 | GitHub Actions |
+| 14 | GitHub + Jenkins CI/CD integration |
+| 15 | Complete industry-style project |
