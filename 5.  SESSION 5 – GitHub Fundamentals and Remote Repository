@@ -1,0 +1,1165 @@
+Learning objectives
+By the end of this session, students will understand:
+1. What is GitHub?
+2. Git vs GitHub.
+3. GitHub architecture.
+4. Creating a GitHub account.
+5. Understanding the GitHub dashboard.
+6. Creating public and private repositories.
+7. Understanding repository structure.
+8. README.md and Markdown.
+9. Understanding .gitignore.
+10. Local vs remote repositories.
+11. Understanding origin.
+12. Git Remote commands.
+13. Git Push.
+14. Git Pull.
+15. Git Fetch.
+16. Git Clone.
+17. HTTPS vs SSH authentication.
+18. Personal Access Tokens (PAT).
+19. SSH key generation and configuration.
+
+PART 1 – Understanding GitHub
+1. What is GitHub?
+Start by asking your students:
+
+"We have learned how to create repositories, commit files, create branches and merge changes using Git. But how can another developer access our code?"
+
+Suppose you create a bakery website on your laptop.
+
+Your project looks like this:
+
+the-fairy-bake/
+│
+├── index.html
+├── about.html
+├── contact.html
+├── style.css
+└── script.js
+
+All your project files and Git history are currently stored on your computer.
+
+Your classmates cannot automatically access this repository.
+
+You need a platform where you can upload, store and share your Git repository.
+
+That platform is GitHub.
+
+Definition:
+
+GitHub is a cloud-based platform that hosts Git repositories and provides collaboration, project management, code review and automation features.
+
+Official website: GitHub
+What does GitHub provide?
+1. Online repository hosting.
+2. Team collaboration.
+3. Pull Requests.
+4. Code reviews.
+5. Issues and bug tracking.
+6. Project management.
+7. GitHub Actions.
+8. Security scanning.
+9. Release management.
+10. Documentation.
+Important classroom explanation
+Git and GitHub are not the same thing.
+
+| Git | GitHub |
+| Version control system | Repository hosting platform |
+| Installed on a computer | Cloud-based platform |
+| Tracks project changes | Hosts Git repositories |
+| Works offline | Enables online collaboration |
+| Uses commands such as commit and branch | Provides Pull Requests, Issues and Actions |
+| Can work without GitHub | Uses Git repositories |
+
+
+Understand the analogy:
+
+Git is the engine that manages version history.
+GitHub is the platform where developers host and collaborate on those Git repositories.
+
+PART 2 – Understanding GitHub Architecture
+2. How GitHub works
+This is an important conceptual topic.
+
+Suppose three developers are working on one project.
+- Developer A works on the homepage.
+- Developer B works on the login page.
+- Developer C works on the payment page.
+Each developer has a local Git repository.
+
+They synchronize their work with a common GitHub repository.
+
+Understand this architecture:
+
+          DEVELOPER A
+          Local Git Repo
+                |
+                |
+                v
+          DEVELOPER B
+          Local Git Repo
+                |
+                |
+                v
+        GITHUB REMOTE REPOSITORY
+                ^
+                |
+                |
+          DEVELOPER C
+          Local Git Repo
+
+A more accurate way to understand the workflow is:
+
+Developer A                 Developer B
+    |                            |
+    v                            v
+Local Repository            Local Repository
+    |                            |
+    | Push                       | Pull/Fetch
+    |                            |
+    +------------+---------------+
+                 |
+                 v
+          GitHub Repository
+
+Each developer can:
+- Push commits to GitHub, if authorized.
+- Fetch changes from GitHub.
+- Pull changes from GitHub.
+- Clone the repository.
+- Create and manage branches.
+Three important terms
+Local Repository: The Git repository on your computer.
+
+Remote Repository: A Git repository hosted somewhere else, such as GitHub.
+
+Remote URL: The address used to connect your local repository to the remote repository.
+
+GitHub documentation: About remote repositories
+
+PART 3 – Creating a GitHub Account
+Practical 1: Create Your First GitHub Account
+Ask every student to open:
+
+GitHub Signup
+
+Steps:
+1. Open GitHub.
+2. Click Sign Up.
+3. Enter your email address.
+4. Create a password.
+5. Select a username.
+6. Complete the verification process.
+7. Verify your email.
+8. Log in.
+Explain GitHub Username
+For example:
+Username: rajesh-devsecops
+
+A GitHub username becomes part of your public profile URL:
+https://github.com/rajesh-devsecops
+
+Classroom recommendation
+Ask students to select professional usernames because they may use GitHub profiles when applying for internships and jobs.
+
+Examples:
+student-name
+studentname-dev
+studentname-cloud
+studentname-devops
+
+PART 4 – Understanding the GitHub Dashboard
+After logging in, explain the major areas of GitHub.
+Important areas:
+| Section | Purpose |
+| Dashboard | Overview of activity and repositories |
+| Repositories | Projects hosted on GitHub |
+| Pull Requests | Review and merge proposed changes |
+| Issues | Track bugs and tasks |
+| Actions | Automate workflows |
+| Projects | Manage project work |
+| Discussions | Community conversations |
+| Profile | Developer information and contributions |
+
+Explain the GitHub Profile
+A developer's GitHub profile can display:
+- Profile picture.
+- Bio.
+- Location (optional).
+- Public repositories.
+- Contribution activity.
+- Pinned projects.
+- README profile.
+Trainer tip: Encourage students to maintain a professional GitHub profile. Recruiters and technical interviewers may look at their repositories and project contributions.
+PART 5 – Creating Your First GitHub Repository
+3. What is a GitHub Repository?
+A repository is a location where a project and its version history are maintained.
+
+For example:
+GitHub Account
+     |
+     |
+     +---- bakery-website
+     |
+     +---- student-management
+     |
+     +---- docker-practical
+     |
+     +---- kubernetes-project
+
+Each repository can contain:
+- Source code.
+- Configuration files.
+- Documentation.
+- Commit history.
+- Branches.
+- Tags.
+- Issues.
+- Pull Requests.
+Practical 2: Create a Repository on GitHub
+We will create a repository called:
+
+the-fairy-bake
+Step 1
+Log in to GitHub.
+Step 2
+Click the + icon in the top-right corner.
+
+Select:
+
+New repository
+Step 3
+Enter the following details:
+
+| Field | Value |
+| Repository name | the-fairy-bake |
+| Description | Online bakery website |
+| Visibility | Public |
+| Add README | Yes |
+| Add .gitignore | No |
+| Choose a license | Optional |
+
+Step 4
+Click:
+
+Create repository
+
+Congratulations! Your first remote GitHub repository is ready.
+
+Official instructions: Creating a new repository
+4. Public vs Private Repository
+This is important from a security perspective.
+Public Repository	Private Repository
+Visible to everyone	Access restricted
+Anyone can view public code	Only authorized users can view
+Useful for open-source projects	Useful for private projects
+Suitable for portfolios	Suitable for confidential projects
+
+
+Important: Public does not mean everyone can directly push code. Writing access still requires appropriate permissions.
+Ask students
+If you are developing a company's confidential banking application, should you use a public repository?
+
+Answer: No. A private repository is generally appropriate, subject to the organization's security policies.
+PART 6 – Understanding Repository Structure
+Open the repository you just created.
+
+You will see different tabs and options.
+
+Let's understand them.
+| Tab | Purpose |
+| Code | Displays source code and files |
+| Issues | Tracks bugs and tasks |
+| Pull Requests | Manages code integration |
+| Actions | CI/CD automation |
+| Projects | Project planning |
+| Security | Security-related features |
+| Insights | Repository activity and analytics |
+| Settings | Repository configuration |
+
+Not every repository displays exactly the same features; some depend on permissions and repository configuration.
+PART 7 – Understanding README.md
+5. What is README.md?
+A README is a documentation file that explains a project.
+
+It is generally written using Markdown.
+
+Whenever someone visits your GitHub repository, the README is displayed prominently.
+
+Think of it as the introduction or documentation page of your project.
+Why is README important?
+It helps developers understand:
+1. What the project does.
+2. Why the project exists.
+3. How to install it.
+4. How to run it.
+5. Which technologies are used.
+6. How to contribute.
+7. How to contact the maintainers.
+Practical 3: Create a README file
+On your local machine:
+nano README.md
+
+On Windows PowerShell:
+notepad README.md
+
+Add:
+# The Fairy Bake
+
+An online bakery website developed using HTML, CSS and JavaScript.
+
+## Project Description
+
+The Fairy Bake provides information about bakery products,
+including cakes, cookies and pastries.
+
+## Technologies Used
+
+- HTML
+- CSS
+- JavaScript
+- Git
+- GitHub
+
+## Features
+
+- Homepage
+- About Us
+- Contact Us
+- Product Information
+
+## Installation
+
+Clone this repository:
+
+git clone <repository-url>
+
+## Author
+
+Student Name
+
+Save the file.
+
+Now stage and commit:
+git add README.md
+git commit -m "Added project documentation"
+
+How is README displayed?
+GitHub automatically renders the README on the repository's main page.
+PART 8 – Understanding Markdown
+Markdown is a lightweight markup language used for formatting documentation.
+
+The file extension is generally:
+.md
+
+Examples:
+1. Heading
+# Main Heading
+
+## Subheading
+
+### Smaller Heading
+
+2. Bold text
+**This is bold text**
+
+3. Italic text
+*This is italic text*
+
+4. Bullet points
+- Linux
+- Git
+- Docker
+- Kubernetes
+
+5. Numbered lists
+1. Install Git.
+2. Create repository.
+3. Commit changes.
+4. Push to GitHub.
+
+6. Code blocks
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+```
+
+7. Hyperlinks
+[Visit GitHub](https://github.com)
+
+8. Images
+![Project Logo](images/logo.png)
+
+9. Tables
+| Tool | Purpose |
+|---|---|
+| Git | Version control |
+| GitHub | Repository hosting |
+| Jenkins | CI/CD |
+| Docker | Containerization |
+
+Classroom activity: Ask students to create a README for their own DevSecOps project using all these Markdown features.
+PART 9 – Understanding .gitignore
+6. What is .gitignore?
+This is one of the most important concepts, particularly for DevSecOps students.
+
+Suppose a developer is working on a Python project.
+
+The project directory contains:
+my-project/
+│
+├── app.py
+├── requirements.txt
+├── .env
+├── __pycache__/
+├── venv/
+├── debug.log
+└── Dockerfile
+
+Should all these files be uploaded to GitHub?
+
+No.
+
+Some files should not be tracked.
+
+For example:
+- Password files.
+- API keys.
+- Environment configuration.
+- Temporary files.
+- Python cache.
+- Virtual environments.
+- Log files.
+We use .gitignore to tell Git which untracked files and directories to ignore.
+Practical 4: Create .gitignore
+Create a file:
+nano .gitignore
+
+Add:
+# Environment variables
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+
+# Log files
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+Save the file.
+
+Now check:
+git status
+
+Files matching these ignore rules will generally not appear as untracked files.
+Important teaching point
+.gitignore normally affects files that are not already tracked by Git.
+
+If a file has already been committed, adding it to .gitignore does not automatically remove it from tracking.
+
+To stop tracking an already tracked file while keeping it locally:
+git rm --cached .env
+
+Then commit the removal.
+
+Security warning: Never upload passwords, AWS access keys, private keys or production credentials to GitHub. .gitignore is not a secret-protection system. If a secret has already been pushed, revoke or rotate it immediately and address its presence in Git history.
+PART 10 – Understanding Local vs Remote Repository
+Now we are reaching the core of today's practical.
+
+Suppose we have:
+LOCAL COMPUTER
+
+the-fairy-bake/
+    index.html
+    about.html
+    README.md
+
+And:
+GITHUB
+
+the-fairy-bake
+    README.md
+
+These are two different repository locations.
+
+We need to connect them.
+
+This connection is established using Git Remote.
+7. What is Git Remote?
+A remote is a named reference to another Git repository.
+
+For example:
+git remote add origin https://github.com/USERNAME/the-fairy-bake.git
+
+Here:
+- git remote = Manage remote repositories.
+- add = Add a new remote.
+- origin = Name assigned to the remote.
+- URL = Address of the GitHub repository.
+What is origin?
+origin is simply a conventional name for the default remote repository.
+
+It is not a special Git keyword.
+
+You could use another name, but origin is widely used.
+
+Explain this analogy:
+
+Imagine you have saved your friend's phone number in your mobile as:
+Name: Rahul
+Number: 9876543210
+
+Instead of remembering the complete number, you use the name Rahul.
+
+Similarly, Git stores the remote URL under a name such as origin.
+PART 11 – Connecting Local Git with GitHub
+Practical 5: Push an Existing Local Repository to GitHub
+This is the most important practical of today's session.
+
+We will use our existing bakery project.
+Step 1. Create a local project
+mkdir fairy-bake-local
+cd fairy-bake-local
+
+Step 2. Initialize Git
+git init
+
+Step 3. Create an HTML file
+nano index.html
+
+Add:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Fairy Bake</title>
+</head>
+<body>
+
+    <h1>Welcome to The Fairy Bake</h1>
+
+    <p>Fresh cakes and bakery products.</p>
+
+</body>
+</html>
+
+Step 4. Create README
+nano README.md
+
+Add:
+# The Fairy Bake
+
+My first GitHub project.
+
+This project demonstrates how Git and GitHub
+are used to manage source code.
+
+Step 5. Stage files
+git add .
+
+Step 6. Commit
+git commit -m "Initial bakery website"
+
+Step 7. Rename the branch
+git branch -M main
+
+Step 8. Create an empty GitHub repository
+On GitHub:
+1. Click New Repository.
+2. Enter fairy-bake-local.
+3. Select Public or Private.
+4. Do not initialize with README.
+5. Do not add a .gitignore.
+6. Click Create Repository.
+Why are we leaving it empty?
+
+Because our local repository already has commits.
+
+Initializing the remote with a separate README commit would create two unrelated histories and require additional integration.
+
+For this beginner demonstration, an empty remote is simpler.
+Step 9. Add the remote URL
+Copy the HTTPS URL from GitHub.
+
+It looks like:
+https://github.com/USERNAME/fairy-bake-local.git
+
+Execute:
+git remote add origin https://github.com/USERNAME/fairy-bake-local.git
+
+Replace USERNAME with your actual GitHub username.
+Step 10. Verify the remote
+git remote -v
+
+Expected output:
+origin  https://github.com/USERNAME/fairy-bake-local.git (fetch)
+origin  https://github.com/USERNAME/fairy-bake-local.git (push)
+
+Step 11. Push the code
+git push -u origin main
+
+What does this command mean?
+Component	Meaning
+git push	Upload local commits to remote
+-u	Set upstream tracking
+origin	Remote repository name
+main	Branch to push
+
+
+After authentication succeeds, your files will appear on GitHub.
+
+Congratulations! You have published your first local Git repository to GitHub.
+
+Official documentation: Managing remote repositories
+PART 12 – Understanding Git Push
+8. What is Git Push?
+Git Push sends local commits to a remote repository.
+
+Suppose you modify the bakery website.
+
+Add:
+<h2>Our Special Cakes</h2>
+
+Now:
+git status
+
+Stage:
+git add .
+
+Commit:
+git commit -m "Added special cakes section"
+
+Push:
+git push
+
+Now GitHub receives the new commit.
+Explain the difference
+git commit saves changes in your local repository.
+
+git push publishes those commits to the remote repository.
+
+Important: Git Push uploads commits, not merely files that have been staged.
+PART 13 – Understanding Git Clone
+9. What is Git Clone?
+Imagine another student wants to download your bakery project.
+
+The student does not have the project locally.
+
+What should they do?
+
+They use:
+git clone <repository-url>
+
+Git Clone creates a local copy of the remote repository, including its Git history.
+
+Practical 6: Clone a GitHub Repository
+Ask students to open another terminal.
+
+Execute:
+git clone https://github.com/USERNAME/fairy-bake-local.git
+
+Now:
+cd fairy-bake-local
+
+Check:
+ls
+
+You should see:
+index.html
+README.md
+
+Check repository history:
+git log --oneline
+
+Check remote:
+git remote -v
+
+You will see origin configured automatically.
+Important difference
+Git Init	Git Clone
+Creates a new local repository	Copies an existing repository
+Does not automatically connect to GitHub	Automatically configures the cloned remote
+Starts with no project history	Downloads existing repository history
+
+
+Classroom question:
+
+If you want to download an existing project from GitHub, should you use git init or git clone?
+
+Answer: git clone.
+PART 14 – Understanding Git Fetch
+10. What is Git Fetch?
+Suppose Developer A and Developer B are working on the same project.
+
+Developer A pushes a new commit to GitHub.
+
+Developer B wants to know whether new commits are available.
+
+But Developer B does not want to immediately merge those changes into their working branch.
+
+What should Developer B do?
+
+Use:
+git fetch
+
+Git Fetch downloads new remote information and updates remote-tracking references.
+
+It does not automatically merge those changes into the current local branch.
+Visual explanation
+Before Fetch:
+Local main:
+
+A ---- B ---- C
+
+GitHub main:
+A ---- B ---- C ---- D
+
+After:
+Local main:
+
+A ---- B ---- C
+
+origin/main:
+
+A ---- B ---- C ---- D
+
+The remote-tracking branch origin/main now reflects the latest fetched remote state.
+Practical
+Execute:
+git fetch origin
+
+Now check:
+git branch -a
+
+You may see:
+* main
+  remotes/origin/main
+
+To inspect the difference:
+git log main..origin/main --oneline
+
+This displays commits present in origin/main but not in local main.
+
+To integrate the changes:
+git merge origin/main
+
+PART 15 – Understanding Git Pull
+11. What is Git Pull?
+Git Pull is used to retrieve and integrate changes from a remote repository into the current local branch.
+
+At a conceptual level:
+git pull = git fetch + integration
+
+The integration is normally a merge, unless the pull configuration or command specifies rebase or another strategy.
+Practical demonstration
+Suppose another student updates the README file on GitHub.
+
+On your local system, execute:
+git pull origin main
+
+Git downloads the latest changes and integrates them into your current branch.
+Important distinction: Fetch vs Pull
+Git Fetch	Git Pull
+Downloads remote updates	Downloads and integrates remote updates
+Does not merge into current branch	Normally merges into current branch
+Gives more control	Convenient for routine synchronization
+Useful for inspecting changes first	Useful when ready to integrate changes
+
+
+Teaching tip: Tell students that Fetch is like checking whether new material is available. Pull is like downloading it and incorporating it into their current work.
+PART 16 – Understanding the Complete GitHub Workflow
+Now combine all the commands.
+
+        GITHUB REPOSITORY
+                |
+                |
+             git clone
+                |
+                v
+        LOCAL REPOSITORY
+                |
+                |
+          Modify Files
+                |
+                v
+            git add
+                |
+                v
+           STAGING AREA
+                |
+                |
+           git commit
+                |
+                v
+        LOCAL REPOSITORY
+                |
+                |
+            git push
+                |
+                v
+        GITHUB REPOSITORY
+
+f another developer updates the remote:
+git fetch
+
+To integrate those changes:
+git pull
+
+This is the fundamental GitHub collaboration workflow.
+PART 17 – Understanding HTTPS vs SSH Authentication
+Now comes an important DevSecOps topic.
+
+When you push code to GitHub, GitHub needs to verify that you have permission to write to the repository.
+
+There are two common connection methods.
+1. HTTPS.
+2. SSH.
+12. HTTPS Authentication
+Example repository URL:
+https://github.com/USERNAME/REPOSITORY.git
+
+HTTPS is easy to understand and commonly used.
+
+When Git needs authentication, it may use Git Credential Manager or prompt for credentials.
+
+Important: GitHub no longer supports ordinary account passwords for Git operations over HTTPS.
+
+You can authenticate using:
+- GitHub CLI and browser authentication.
+- Personal Access Token.
+- Git Credential Manager.
+Official documentation: GitHub authentication methods
+13. What is a Personal Access Token (PAT)?
+A Personal Access Token is a token used to authenticate with GitHub.
+
+Think of it as a secure credential that grants specified access to GitHub resources.
+
+Instead of using your GitHub account password for HTTPS Git operations, you use a token when prompted for a password.
+Types of PAT
+GitHub provides two major types:
+1. Fine-grained Personal Access Tokens.
+2. Personal Access Tokens (classic).
+Fine-grained tokens provide more specific repository and permission controls and are generally preferable when supported.
+Practical 7: Create a Personal Access Token
+Open:
+
+GitHub Personal Access Token Settings
+
+Steps:
+1. Log in to GitHub.
+2. Open Settings.
+3. Navigate to Developer settings.
+4. Select Personal access tokens.
+5. Select Fine-grained tokens.
+6. Click Generate new token.
+7. Enter a token name.
+8. Set an expiration date.
+9. Select the appropriate resource owner.
+10. Restrict repository access to the required repository.
+11. Grant only the permissions needed.
+For a basic repository push practical, the token needs repository Contents permission with Read and write access.
+12. Generate the token.
+13. Copy it and store it securely.
+Very important security instructions:
+- Never share your token with students.
+- Never put tokens inside source code.
+- Never upload tokens to GitHub.
+- Never include tokens in screenshots.
+- Never store tokens in README files.
+If exposed, revoke the token immediately.
+
+When using HTTPS authentication, enter your GitHub username when prompted for username and the PAT when prompted for password.
+
+Git Credential Manager can securely manage credentials and avoid repeated manual entry.
+
+GitHub documentation: Managing Personal Access Tokens
+PART 18 – SSH Authentication
+This is particularly useful for students who will work with Linux, EC2 and DevSecOps pipelines.
+14. What is SSH?
+SSH stands for Secure Shell.
+
+It is a network protocol used to securely communicate with remote systems.
+
+GitHub supports SSH authentication through public/private key pairs.
+Understand Public and Private Keys
+When you generate an SSH key pair, two files are created.
+SSH Key Pair
+     |
+     |
+     +---- Private Key
+     |
+     +---- Public Key
+
+Private Key:
+- Remains on your computer.
+- Must be protected.
+- Must never be shared.
+Public Key:
+- Can be added to your GitHub account.
+- Is used by GitHub to verify the corresponding private key.
+How does SSH authentication work?
+
+1. Developer generates an SSH key pair.
+2. Developer adds the public key to GitHub.
+3. Developer connects using an SSH remote URL.
+4. GitHub verifies that the developer possesses the corresponding private key.
+5. If authentication and repository permissions are valid, access is granted.
+PART 19 – Practical: Configure SSH Authentication
+We will perform this practical on Ubuntu and Windows.
+Step 1. Check existing SSH keys
+Ubuntu:
+ls -la ~/.ssh
+
+Windows PowerShell:
+Get-ChildItem ~/.ssh
+
+Look for:
+id_ed25519
+id_ed25519.pub
+
+If these files already exist, do not overwrite them. You can reuse the existing key or create a separate key with another filename.
+Step 2. Generate an SSH key
+Ubuntu:
+ssh-keygen -t ed25519 -C "student@example.com"
+
+Windows PowerShell:
+ssh-keygen -t ed25519 -C "student@example.com"
+
+The command will ask where to save the key.
+
+Press Enter to accept the default path if appropriate.
+
+You can set a passphrase for additional protection.
+
+Two files will be generated:
+id_ed25519
+id_ed25519.pub
+
+Step 3. Start SSH Agent
+On Ubuntu/Git Bash:
+eval "$(ssh-agent -s)"
+
+Add the private key:
+ssh-add ~/.ssh/id_ed25519
+
+On Windows PowerShell, you can use the Windows OpenSSH agent service. If necessary, open PowerShell as Administrator:
+Get-Service ssh-agent
+Set-Service -Name ssh-agent -StartupType Automatic
+Start-Service ssh-agent
+
+Then, in your normal PowerShell terminal:
+ssh-add "$env:USERPROFILE\.ssh\id_ed25519"
+
+Step 4. Copy the public key
+Ubuntu/Git Bash:
+cat ~/.ssh/id_ed25519.pub
+
+Windows PowerShell:
+Get-Content "$env:USERPROFILE\.ssh\id_ed25519.pub"
+
+Copy the entire output.
+
+Never copy or upload id_ed25519 (the private key).
+Step 5. Add the public key to GitHub
+Open:
+
+GitHub SSH and GPG Keys Settings
+
+Steps:
+1. Open GitHub Settings.
+2. Select SSH and GPG keys.
+3. Click New SSH key.
+4. Enter a title, such as Student Windows Laptop.
+5. Select Authentication Key.
+6. Paste your public key.
+7. Click Add SSH key.
+Step 6. Test the connection
+Execute:
+ssh -T git@github.com
+
+On first connection, verify the host fingerprint against GitHub's published SSH fingerprints before accepting it.
+
+Successful authentication will produce a greeting identifying your GitHub username.
+Step 7. Use SSH repository URL
+An SSH repository URL looks like:
+git@github.com:USERNAME/REPOSITORY.git
+
+To change an existing repository from HTTPS to SSH:
+git remote set-url origin git@github.com:USERNAME/REPOSITORY.git
+
+Verify:
+git remote -v
+
+Now:
+git push
+
+Your SSH key will be used for authentication.
+
+Official documentation: Connecting to GitHub with SSH
+PART 20 – Understanding Important Remote Commands
+Make students maintain this command reference.
+Command	Purpose
+git remote	List remote names
+git remote -v	Display remote URLs
+git remote add origin URL	Add a remote
+git remote remove origin	Remove a remote reference
+git remote rename origin upstream	Rename a remote
+git remote set-url origin URL	Change remote URL
+git push	Upload commits
+git push -u origin main	Push and set upstream
+git pull	Fetch and integrate changes
+git fetch	Download remote updates
+git clone URL	Clone a remote repository
+
+
+An additional useful command
+git branch -vv
+
+This displays local branches and their upstream tracking information.
+
+For example:
+* main abc1234 [origin/main] Initial commit
+
+It tells you that the local main branch is tracking origin/main.
+PART 21 – Complete Industry-Level Practical
+Now conduct a practical combining all the concepts.
+Project: The Fairy Bake – GitHub Integration
+Scenario:
+
+You are a developer working on an online bakery website.
+
+Your company wants you to:
+1. Create a GitHub repository.
+2. Develop the application locally.
+3. Connect local Git with GitHub.
+4. Push the application.
+5. Clone the application.
+6. Modify the application.
+7. Fetch remote changes.
+8. Pull changes.
+9. Configure SSH authentication.
+10. Publish further changes using SSH.
+Complete practical workflow
+# 1. Create project
+mkdir fairy-bake-project
+cd fairy-bake-project
+
+# 2. Initialize Git
+git init
+
+# 3. Create application files
+echo "<h1>The Fairy Bake</h1>" > index.html
+
+# 4. Create README
+echo "# The Fairy Bake" > README.md
+
+# 5. Stage files
+git add .
+
+# 6. Commit
+git commit -m "Initial bakery website"
+
+# 7. Rename branch
+git branch -M main
+
+# 8. Add remote
+git remote add origin https://github.com/USERNAME/fairy-bake-project.git
+
+# 9. Verify remote
+git remote -v
+
+# 10. Push to GitHub
+git push -u origin main
+
+# 11. Make another change
+echo "<h2>Our Products</h2>" >> index.html
+
+# 12. Commit
+git add .
+git commit -m "Added products section"
+
+# 13. Push changes
+git push
+
+# 14. Fetch remote changes
+git fetch origin
+
+# 15. Pull changes
+git pull origin main
+
+Replace USERNAME with the actual GitHub account username.
+
+Note: Steps 14 and 15 are separate demonstrations of fetching and integrating remote changes. If there are no new remote commits, they may not visibly change anything.
+PART 22 – Troubleshooting Common GitHub Errors
+These are errors your students will frequently encounter.
+Error 1: Remote origin already exists
+fatal: remote origin already exists.
+
+Reason: A remote named origin is already configured.
+
+Solution:
+git remote -v
+
+If the URL is incorrect:
+git remote set-url origin <new-url>
+
+Error 2: Authentication failed
+Authentication failed
+
+Possible reasons:
+- Incorrect credentials.
+- Expired or revoked PAT.
+- Incorrect token permissions.
+- Cached invalid credentials.
+Solution:
+
+Verify authentication and permissions. For HTTPS, use Git Credential Manager or a valid PAT.
+Error 3: Repository not found
+ERROR: Repository not found.
+
+Possible reasons:
+- Incorrect repository URL.
+- Repository does not exist.
+- Repository is private and you lack access.
+- Wrong GitHub account is being used.
+Error 4: Rejected push
+! [rejected] main -> main (fetch first)
+
+Reason:
+
+The remote repository contains commits that your local branch does not have.
+
+Solution:
+git pull --rebase origin main
+
+Resolve any conflicts if they occur, then:
+git push origin main
+
+Explain that --rebase replays your local commits on top of the updated remote history. If the team uses merge-based integration, git pull origin main may be more appropriate.
+Error 5: Permission denied (publickey)
+Permission denied (publickey).
+
+Possible reasons:
+- Public key not added to GitHub.
+- Wrong private key loaded.
+- SSH agent not running.
+- Incorrect SSH remote URL.
+Check:
+ssh -T git@github.com
+
+Verify your key configuration.
