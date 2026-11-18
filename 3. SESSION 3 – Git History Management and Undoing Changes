@@ -1,0 +1,622 @@
+Learning objectives
+By the end of this session, students should be able to:
+1. Understand how Git maintains project history.
+2. View and inspect previous commits.
+3. Compare different versions of files.
+4. Identify changes before committing.
+5. Undo modifications safely.
+6. Delete files from Git tracking.
+7. Understand Git Reset and Git Revert.
+8. Recover previous commits using Git Reflog.
+9. Understand the difference between Soft, Mixed and Hard Reset.
+
+PART 1 – Understanding Git Commit History
+1. What is Git history?
+First, explain a real-life scenario.
+
+Suppose a developer creates a bakery website.
+
+On Monday, the developer creates the homepage.
+
+On Tuesday, the developer adds a navigation menu.
+
+On Wednesday, the developer adds a login page.
+
+On Thursday, the developer accidentally modifies the homepage and breaks the design.
+
+Now the developer wants to return to Wednesday's version.
+
+How can this be done?
+
+This is where Git history becomes useful.
+
+Git maintains a record of committed changes, allowing developers to inspect earlier versions and recover previous project states.
+Visual explanation
+
+Commit 1          Commit 2          Commit 3          Commit 4
+   |                 |                 |                 |
+   v                 v                 v                 v
+
+Initial         Added Menu        Added Login       Updated CSS
+Website         Navigation        Functionality     Design
+
+------------------------------------------------------------>
+                     Project Timeline
+
+
+ Every commit represents a snapshot of the project.
+Note: "Git is not just a tool for saving code. It is a time machine for your project."           
+
+PART 2 – Understanding Git Log
+2. What is git log?
+The git log command displays the commit history of a repository.
+
+Let's perform a practical.
+Practical 1: Create a project with multiple commits
+Step 1. Create a directory.
+
+mkdir git-history-lab
+cd git-history-lab
+
+Step 2. Initialize Git.
+git init
+
+Step 3. Configure your identity if not already configured.
+git config --global user.name "Student"
+git config --global user.email "student@example.com"
+
+Step 4. Create a file.
+nano index.html
+
+Add:
+<h1>Welcome to The Fairy Bake</h1>
+<p>Fresh cakes and bakery products.</p>
+
+Step 5. Stage and commit.
+git add index.html
+git commit -m "Initial bakery website"
+
+Step 6. Modify the file.
+nano index.html
+
+Add another line:
+<p>We provide fresh cakes, cookies and pastries.</p>
+
+Commit again:
+git add index.html
+git commit -m "Added bakery product description"
+
+Step 7. Modify the file again.
+<h2>Our Special Cakes</h2>
+
+Commit:
+git add index.html
+git commit -m "Added special cakes section"
+
+Now execute:
+git log
+
+3. Useful variations of Git Log
+A. One-line history
+git log --oneline
+
+Output:
+8f43c21 Added special cakes section
+6a12b45 Added bakery product description
+3b29c87 Initial bakery website
+
+This is useful when there are hundreds of commits.
+B. Graphical history
+git log --graph --oneline
+
+This displays commit history as a graph.
+C. Show all branches
+git log --all --oneline --graph --decorate
+
+This becomes particularly useful when students start working with branches.
+D. Display the last three commits
+git log -3
+
+E. Display commits by author
+git log --author="Student"
+
+F. Display commits with date information
+git log --pretty=fuller
+
+If a developer wants to know who committed a particular change and when, which command should they use?
+
+Answer: git log.
+
+PART 3 – Understanding Git Show
+4. What is git show?
+git show displays detailed information about a particular Git object, commonly a commit.
+
+For example:
+git show
+
+This displays information about the latest commit.
+
+You can also inspect a particular commit:
+git show 8f43c21
+
+Here, 8f43c21 is an example commit ID. Students should use their own commit ID.
+What does Git Show display?
+- Commit ID.
+- Author.
+- Date.
+- Commit message.
+- Files changed.
+- Actual content differences.
+Practical demonstration
+First:
+git log --oneline
+
+Copy the commit ID.
+
+Then:
+git show <commit-id>
+
+Explain to students:
+
+"git log tells us which commits exist. git show helps us understand what happened inside a particular commit."
+PART 4 – Understanding Git Diff
+5. What is Git Diff?
+This is one of the most frequently used commands in professional development.
+
+Suppose your committed HTML file contains:
+<h1>Welcome to The Fairy Bake</h1>
+<p>Fresh cakes and bakery products.</p>
+
+Now modify it:
+<h1>Welcome to The Fairy Bake Bakery</h1>
+<p>Fresh cakes, cookies and pastries.</p>
+
+Execute:
+git diff
+
+You may see:
+-<h1>Welcome to The Fairy Bake</h1>
++<h1>Welcome to The Fairy Bake Bakery</h1>
+
+-<p>Fresh cakes and bakery products.</p>
++<p>Fresh cakes, cookies and pastries.</p>
+
+Explain the output
+- - means removed content.
+- + means added content.
+Important Git Diff variations
+Command	Explanation
+git diff	Working directory vs staging area
+git diff --staged	Staging area vs latest commit
+git diff HEAD	Combined working-directory and staged changes vs HEAD
+git diff HEAD~1 HEAD	Compare previous commit with latest commit
+git diff <commit1> <commit2>	Compare two commits
+
+
+Practical: Compare two commits
+git log --oneline
+
+Copy two commit IDs.
+
+Run:
+git diff <commit1> <commit2>
+
+This shows how the project changed between those two versions.
+
+Important teaching point: Git Diff helps developers inspect changes before committing them. It is particularly useful in code reviews.
+PART 5 – Undoing Changes in Git
+Now comes the most important practical section.
+
+Tell students:
+
+"Developers make mistakes. Sometimes they modify the wrong file, stage unwanted changes or commit incorrect code. Git provides different mechanisms to recover from these situations."
+
+There are several commands, and each solves a different problem.
+6. Understanding Git Restore
+git restore is used to restore file contents.
+
+It can discard unstaged modifications or restore files from a specified source.
+Scenario 1: Accidentally modified a file
+Suppose the original file is:
+<h1>Welcome to The Fairy Bake</h1>
+
+You accidentally change it to:
+<h1>Welcome to The Worst Bakery</h1>
+
+Check:
+git status
+
+Git reports:
+modified: index.html
+
+Now you want to discard the modification.
+
+Execute:
+git restore index.html
+
+Check the file.
+cat index.html
+
+The file returns to its content in the index (normally the latest commit if nothing was staged).
+
+Explain: Git Restore discards the unstaged changes in the working directory.
+Scenario 2: Unstage a file
+Suppose:
+git add index.html
+
+You accidentally staged the wrong file.
+
+Now execute:
+git restore --staged index.html
+
+The file is removed from the staging area, but its modifications remain in the working directory.
+
+Check:
+git status
+
+You should now see the file as modified rather than staged.
+Important distinction
+Command	Result
+git restore index.html	Discards unstaged modifications
+git restore --staged index.html	Removes changes from staging but preserves working-directory changes
+
+
+Warning: git restore can permanently discard uncommitted work. Teach students to inspect git diff before using it.
+PART 6 – Git RM and Git MV
+7. What is Git RM?
+Suppose we want to remove contact.html from our bakery project.
+
+We can execute:
+git rm contact.html
+
+This removes the file from the working directory and stages its deletion.
+
+Then:
+git commit -m "Removed contact page"
+
+What if we want to stop tracking a file but keep it locally?
+Execute:
+git rm --cached filename
+
+Example:
+git rm --cached config.txt
+
+This removes the file from Git's tracking index while keeping the working-directory copy.
+
+This is useful when a file should remain on the developer's computer but should no longer be tracked by Git.
+
+Important: If a file contains passwords or API keys, removing it from the current commit does not erase the secret from previous commits. The secret should be rotated immediately.
+8. What is Git MV?
+git mv is used to rename or move a tracked file.
+
+Example:
+git mv about.html about-us.html
+
+This renames the file and stages the corresponding changes.
+
+Commit:
+git commit -m "Renamed about page"
+
+You can also move a file into a directory:
+mkdir pages
+git mv about-us.html pages/
+
+PART 7 – Git Reset: Soft vs Mixed vs Hard
+This is a very important topic. Spend sufficient time here.
+9. What is Git Reset?
+Git Reset moves the current branch reference (HEAD) to another commit.
+
+Depending on the reset mode, it also changes the staging area and working directory.
+
+Imagine this commit history:
+
+A ---- B ---- C ---- D
+                  HEAD
+
+ Suppose we want to move back from commit D to commit C.
+
+Command:
+git reset <commit-C>
+
+But what happens to the changes from commit D?
+
+That depends on the reset mode.
+A. Git Reset --Soft
+git reset --soft HEAD~1
+
+Meaning:
+- Moves HEAD backwards by one commit.
+- Keeps changes from the removed commit staged.
+- Does not discard the changes from the working directory.
+Example:
+Before:
+A ---- B ---- C ---- D
+
+After:
+A ---- B ---- C
+             HEAD
+
+Changes from D remain staged.
+
+Use case: You committed something but want to undo the commit while keeping the changes ready to recommit.
+B. Git Reset --Mixed
+git reset --mixed HEAD~1
+
+Meaning:
+- Moves HEAD backwards.
+- Resets the staging area.
+- Keeps the file changes in the working directory.
+Example:
+Before:
+A ---- B ---- C ---- D
+
+After:
+A ---- B ---- C
+             HEAD
+
+Changes from D remain unstaged.
+
+This is the default mode of git reset.
+
+Therefore:
+git reset HEAD~1
+
+is equivalent to:
+git reset --mixed HEAD~1
+
+Use case: You want to undo the last commit but retain your changes so you can modify or selectively stage them again.
+C. Git Reset --Hard
+git reset --hard HEAD~1
+
+Meaning:
+- Moves HEAD backwards.
+- Resets the staging area.
+- Resets tracked working-directory files to match the target commit.
+Example:
+Before:
+A ---- B ---- C ---- D
+
+After:
+A ---- B ---- C
+             HEAD
+
+Changes from D are discarded.
+
+Warning: This can destroy uncommitted changes and make the removed commit unreachable through the branch. Recovery may be possible using reflog, but students must never treat that as guaranteed.
+Comparison table
+Feature	Soft	Mixed	Hard
+Moves HEAD	Yes	Yes	Yes
+Resets staging area	No	Yes	Yes
+Resets tracked working files	No	No	Yes
+Keeps changes staged	Yes	No	No
+Keeps changes unstaged	No	Yes	No
+
+
+Classroom demonstration
+Create three commits:
+echo "Version 1" > demo.txt
+git add demo.txt
+git commit -m "Version 1"
+
+echo "Version 2" >> demo.txt
+git add demo.txt
+git commit -m "Version 2"
+
+echo "Version 3" >> demo.txt
+git add demo.txt
+git commit -m "Version 3"
+
+Check:
+git log --oneline
+
+Now execute:
+git reset --soft HEAD~1
+
+Check:
+git status
+git log --oneline
+
+Observe that Version 3's changes remain staged.
+
+For the next demonstrations, restore the original history or create a fresh repository so each reset mode can be demonstrated independently.
+
+Repeat with:
+git reset --mixed HEAD~1
+
+And finally, on a disposable test repository:
+git reset --hard HEAD~1
+
+Ask students to observe the difference after each command.
+PART 8 – Git Revert: Safely Undo a Commit
+10. What is Git Revert?
+This is particularly important in professional environments.
+
+Suppose five developers are working on a shared project.
+
+A developer makes a commit that introduces a bug.
+
+The commit has already been pushed to GitHub.
+
+Should we use git reset --hard?
+
+Usually, no.
+
+Why?
+
+Because resetting a shared branch rewrites its history and can cause problems for other developers.
+
+Instead, we generally use:
+git revert <commit-id>
+
+Git creates a new commit that reverses the changes introduced by the selected commit.
+Visual explanation
+Before:
+A ---- B ---- C ---- D
+                  HEAD
+
+Suppose D introduced a bug.
+
+After:
+A ---- B ---- C ---- D ---- E
+                              HEAD
+
+E = Reverses changes introduced by D
+
+Notice something important:
+
+The original commit D still exists in the history.
+
+Git creates a new commit E to reverse its changes.
+Practical
+First check history:
+git log --oneline
+
+Copy the commit ID that introduced the unwanted change.
+
+Execute:
+git revert <commit-id>
+
+Git may open an editor for the revert commit message.
+
+You can also use:
+git revert --no-edit <commit-id>
+
+Teaching point:
+- reset moves the branch reference and can remove commits from the branch history.
+- revert preserves existing history and creates a new commit that reverses an earlier commit.
+For shared branches, revert is generally the safer choice.
+PART 9 – Git Commit Amend
+11. What is Git Commit Amend?
+Imagine you have committed a file:
+git add index.html
+git commit -m "Added home page"
+
+Immediately afterward, you realize that you forgot to include style.css.
+
+Instead of creating another commit, you can amend the previous commit.
+
+Execute:
+git add style.css
+git commit --amend
+
+This updates the previous commit.
+
+If you only want to correct the commit message:
+git commit --amend -m "Added homepage and styling"
+
+Important: Amend replaces the previous commit with a new commit. Avoid amending commits that have already been shared unless you understand the implications of rewriting history.
+PART 10 – Git Reflog: Recovering Lost Commits
+This is an excellent advanced demonstration for students.
+12. What is Git Reflog?
+Git Reflog records updates to local references such as HEAD and branch tips.
+
+It helps developers locate previous positions of HEAD, including after reset operations.
+
+Suppose:
+A ---- B ---- C ---- D
+
+You accidentally execute:
+git reset --hard HEAD~1
+
+Now your branch points to C instead of D.
+
+You think your last commit is lost.
+
+This is where Reflog helps.
+
+Execute:
+git reflog
+
+Example output:
+abc1234 HEAD@{0}: reset: moving to HEAD~1
+def5678 HEAD@{1}: commit: Added payment page
+ghi9012 HEAD@{2}: commit: Added login page
+
+Here, def5678 may be the commit you want to recover.
+
+To recover it:
+git reset --hard def5678
+
+Warning: This command moves the current branch back to that commit and resets tracked files. Use it only after checking the current state and ensuring valuable work is protected.
+
+An even safer first step is to create a recovery branch:
+git branch recovery def5678
+
+Now the commit is reachable through the recovery branch.
+Important distinction
+Command	Purpose
+git log	Displays reachable commit history
+git reflog	Displays local reference movement history
+
+
+Tell students:
+
+"Git Log tells you what commits are reachable in your current history. Git Reflog helps you find where your HEAD and branches were previously pointing."
+PART 11 – Complete Practical: Recovering a Broken Bakery Website
+Now combine everything.
+Scenario
+You are the developer of The Fairy Bake website.
+
+Your tasks:
+1. Create the project.
+2. Make three commits.
+3. Inspect commit history.
+4. Modify a file.
+5. Compare changes.
+6. Restore an accidental modification.
+7. Create an incorrect commit.
+8. Revert the incorrect commit.
+9. Reset a commit using Soft mode.
+10. Recover a previous commit using Reflog.
+Step 1. Create project
+mkdir fairy-bake-history
+cd fairy-bake-history
+git init
+
+Step 2. Create first version
+echo "<h1>The Fairy Bake</h1>" > index.html
+
+git add .
+git commit -m "Initial bakery website"
+
+Step 3. Add product section
+echo "<h2>Our Products</h2>" >> index.html
+
+git add .
+git commit -m "Added products section"
+
+Step 4. Add contact section
+echo "<h2>Contact Us</h2>" >> index.html
+
+git add .
+git commit -m "Added contact section"
+
+Step 5. Inspect history
+git log --oneline
+
+Step 6. Modify the file incorrectly
+echo "<h1>Broken Website</h1>" >> index.html
+
+Inspect:
+git diff
+
+Discard the modification:
+git restore index.html
+
+Step 7. Create an unwanted commit
+echo "<h2>Temporary Section</h2>" >> index.html
+
+git add .
+git commit -m "Added temporary section"
+
+Step 8. Revert the commit
+git revert HEAD
+
+Now check:
+git log --oneline
+
+Observe that Git has created a new commit reversing the temporary section.
+Step 9. Understand Reflog
+git reflog
+
+Discuss the reference movements and recovery options.                 
