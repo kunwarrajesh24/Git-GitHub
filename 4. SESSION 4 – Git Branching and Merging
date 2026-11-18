@@ -1,0 +1,982 @@
+From Beginner to Advanced | Complete Theory + Hands-on Practicals
+
+Learning Objectives
+By the end of this session, students should understand:
+1. What is a Git branch?
+2. Why do developers need branches?
+3. How Git branching works internally.
+4. What is the HEAD pointer?
+5. Main vs Master branch.
+6. Creating and switching branches.
+7. Renaming and deleting branches.
+8. Understanding feature branches.
+9. What is Git Merge?
+10. Fast-forward merging.
+11. Three-way merging.
+12. Understanding merge conflicts.
+13. Resolving merge conflicts.
+14. What is Detached HEAD?
+15. Git Merge vs Git Rebase.
+
+PART 1 – Understanding Git Branching
+1. First, understand the problem
+Start your class with this real-world scenario.
+
+Imagine that a company is developing an e-commerce website.
+
+Three developers are working on the same project.
+- Developer A is developing the login functionality.
+- Developer B is developing the payment functionality.
+- Developer C is developing the shopping cart.
+Now think:
+
+Should all three developers modify the main project directly at the same time?
+
+What problems might occur?
+1. One developer may overwrite another developer's changes.
+2. Incomplete code may enter the production application.
+3. Testing new functionality may affect existing functionality.
+4. Developers may accidentally introduce bugs into the working application.
+We need a solution.
+
+That solution is called Git Branching.
+2. What is a Branch in Git?
+A branch is an independent line of development that allows developers to work on different features without directly modifying the main development line.
+
+Think of it like this:
+
+You have one main project.
+You want to develop three different features.
+Instead of modifying the main branch directly, you create separate branches.
+
+Example:
+
+                    MAIN
+                     |
+                     |
+              ---------------
+              |      |      |
+              |      |      |
+           Login  Payment  Cart
+           Branch Branch  Branch
+
+
+Each developer can work independently.
+
+After completing their work, their changes can be merged into the main branch.
+Real-life analogy
+Imagine a teacher preparing three different versions of an examination paper.
+- Version 1: Mathematics.
+- Version 2: Science.
+- Version 3: Computer Science.
+All versions originate from the same initial template.
+
+Each teacher modifies their own copy.
+
+After reviewing them, the final documents are collected.
+
+Git branches work on a similar principle.
+Important definition
+A Git branch is essentially a movable reference to a commit.
+
+This is an important technical definition.
+
+A branch is not normally a complete independent copy of your entire project. It is a lightweight reference to a particular commit.
+PART 2 – Understanding Git's Branch Architecture
+3. How Git stores branches
+Let's understand this technically.
+
+Suppose we have created three commits.
+
+A ---- B ---- C
+             |
+             |
+            main
+
+
+ Here:
+- A = First commit.
+- B = Second commit.
+- C = Third commit.
+- Main = Branch pointing to commit C.
+Now suppose we create a new branch called feature-login.
+
+A ---- B ---- C
+             | \
+             |  \
+           main  feature-login
+
+
+ Both branches initially point to the same commit.
+
+Now switch to feature-login and create another commit.
+A ---- B ---- C ---- D
+             |         |
+            main   feature-login
+
+
+ What happened?
+- Main still points to C.
+- Feature-login points to D.
+- The new work exists on the feature branch.
+This is how Git branching works.
+
+Teaching point: Creating a branch does not duplicate the entire project. Git creates a lightweight reference to a commit.
+
+PART 3 – Understanding HEAD
+4. What is HEAD in Git?
+This is an important concept.
+
+Explain to students:
+
+HEAD is a special reference that identifies the currently checked-out commit. Normally, it points symbolically to the current branch.
+
+For example:
+A ---- B ---- C
+             |
+            main
+             |
+            HEAD
+
+Here, HEAD points to the main branch, which points to commit C.
+
+Now execute:
+git switch feature-login
+
+HEAD moves to the feature-login branch.
+
+Example:
+A ---- B ---- C
+             |
+             |\
+             | \
+           main  feature-login
+                    |
+                   HEAD
+
+Important: HEAD does not necessarily point directly to a branch. In a detached HEAD state, it points directly to a commit.
+
+We will demonstrate this later.
+PART 4 – Git Branch Commands
+Now start the practical demonstration.
+Practical 1: Create Your First Branch
+Step 1. Create a project
+mkdir git-branching-lab
+cd git-branching-lab
+
+Step 2. Initialize Git
+git init
+
+Step 3. Create an HTML file
+nano index.html
+
+On Windows PowerShell:
+notepad index.html
+
+Add:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Fairy Bake</title>
+</head>
+<body>
+    <h1>Welcome to The Fairy Bake</h1>
+</body>
+</html>
+
+Step 4. Commit the initial version
+git add .
+git commit -m "Initial bakery website"
+
+Step 5. Check existing branches
+git branch
+
+Expected output:
+* main
+
+The asterisk indicates the currently selected branch.
+
+Depending on the Git configuration, the initial branch might be named master instead of main.
+6. What is Main vs Master?
+Historically, Git repositories commonly used master as the default initial branch name.
+
+Today, main is widely used as the default branch name on GitHub and many development platforms.
+
+Both are simply branch names.
+
+They have no fundamental technical difference.
+
+You can rename the current branch:
+git branch -M main
+
+This command renames the current branch to main.
+Step 7. Create a new branch
+git branch feature-homepage
+
+Check:
+git branch
+
+Output:
+  feature-homepage
+* main
+
+Explain:
+
+The branch has been created, but we are still working on main.
+Step 8. Switch to the new branch
+git switch feature-homepage
+
+Check:
+git branch
+
+Output:
+* feature-homepage
+  main
+
+Now we are working on the feature-homepage branch.
+Alternative command
+Historically, developers used:
+git checkout feature-homepage
+
+Both commands can switch branches.
+
+However, git switch is generally clearer for branch switching.
+Step 9. Create and switch in one command
+Instead of executing two commands:
+git branch feature-about
+git switch feature-about
+
+You can execute:
+git switch -c feature-about
+
+This creates and switches to the new branch.
+PART 5 – Practical: Working on Multiple Branches
+Now demonstrate the most important concept.
+
+We will develop two features independently.
+Practical 2: Create Homepage and About Page Using Branches
+Step 1. Switch to main
+git switch main
+
+Step 2. Create a homepage
+nano index.html
+
+Add:
+<h1>Welcome to The Fairy Bake</h1>
+<p>Fresh bakery products.</p>
+
+Commit:
+git add .
+git commit -m "Updated homepage"
+
+Step 3. Create a feature branch
+git switch -c feature-about
+
+Step 4. Create about.html
+nano about.html
+
+Add:
+<h1>About The Fairy Bake</h1>
+<p>We provide fresh and delicious bakery products.</p>
+
+Commit:
+git add .
+git commit -m "Added about page"
+
+Step 5. Check branch history
+git log --oneline --all --graph --decorate
+
+You will see the commit history of both branches.
+Step 6. Switch back to main
+git switch main
+
+Now check:
+ls
+
+You will see the files committed on main, but about.html will not be present.
+
+Switch back:
+git switch feature-about
+
+Now about.html will appear.
+Explain why this happens.
+Git updates the working directory to reflect the currently checked-out branch.
+
+The feature branch contains the about page, while main does not yet contain that commit.
+
+Important: Switching branches with uncommitted changes may be blocked or may carry compatible changes across. Students should commit or safely stash their work before switching.
+PART 6 – Renaming and Deleting Branches
+5. Renaming a branch
+Suppose we created:
+git branch test-feature
+
+Now we want to rename it.
+git branch -m test-feature feature-testing
+
+If we are currently on the branch:
+git branch -m feature-testing
+
+6. Deleting a branch
+Suppose we have finished working on a feature.
+
+We no longer need the branch.
+
+First, switch to main:
+git switch main
+
+Delete the merged branch:
+git branch -d feature-about
+
+Difference between -d and -D
+Command	Meaning
+git branch -d	Safely deletes a branch when Git considers it merged
+git branch -D	Force-deletes a branch even if Git considers it unmerged
+
+
+Be careful with -D. It can remove a branch reference to work that has not been integrated elsewhere.
+Other useful commands
+List local branches:
+git branch
+
+List remote-tracking branches:
+git branch -r
+
+List all branches:
+git branch -a
+
+PART 7 – Understanding Git Merge
+Now we come to the most important part of today's session.
+7. What is Git Merge?
+Suppose Developer A has completed the login functionality.
+
+Developer B has completed the payment functionality.
+
+Now the company wants to combine both features into the main application.
+
+How can we do that?
+
+We use Git Merge.
+
+Definition:
+
+Git Merge combines changes from one branch into another branch.
+
+Let's understand through a diagram.
+
+A ---- B ---- C       main
+             \
+              D ---- E    feature-login
+
+ After merging, the changes from feature-login are incorporated into main.
+
+There are two common merge outcomes:
+1. Fast-forward merge.
+2. Three-way merge.
+Let's understand both.
+PART 8 – Fast-Forward Merge
+8. What is Fast-Forward Merge?
+Suppose we have:
+A ---- B ---- C       main
+             \
+              D ---- E    feature
+
+Actually, in a fast-forward scenario, main has not advanced since the feature branch was created. The correct starting history looks like:
+A ---- B ---- C       main
+             \
+              D ---- E    feature
+
+Here, main still points to C.
+
+Feature points to E.
+
+There is no separate new commit on main that needs to be combined.
+
+Git can simply move the main branch reference forward to E.
+
+This is called a Fast-Forward Merge.
+
+After merging:
+A ---- B ---- C ---- D ---- E
+                              |
+                             main
+                              |
+                            feature
+
+Notice:
+
+No new merge commit was required.
+
+Git simply moved the main branch pointer forward.
+Practical 3: Perform Fast-Forward Merge
+Create a fresh repository for this practical.
+Step 1. Create project
+mkdir fast-forward-lab
+cd fast-forward-lab
+git init
+
+Step 2. Create initial file
+echo "Welcome to Git Training" > index.html
+
+git add .
+git commit -m "Initial commit"
+
+Step 3. Create feature branch
+git switch -c feature
+
+Step 4. Add a new feature
+echo "Login functionality" > login.txt
+
+git add .
+git commit -m "Added login feature"
+
+Step 5. Switch to main
+git switch main
+
+Step 6. Merge feature branch
+git merge feature
+
+Expected output will indicate that Git performed a fast-forward merge.
+Step 7. Verify
+git log --oneline --graph --all
+
+Check files:
+ls
+
+You should now see:
+index.html
+login.txt
+
+The login feature is now part of main.
+PART 9 – Three-Way Merge
+9. What is Three-Way Merge?
+Now consider a different situation.
+
+Developer A is working on the main branch.
+
+Developer B creates a feature branch.
+
+Both developers make separate commits.
+
+Example:
+          C ---- D      main
+         /
+A ---- B
+         \
+          E ---- F      feature
+
+Now:
+- Main has advanced to D.
+- Feature has advanced to F.
+- Both branches contain separate changes.
+Git cannot simply move the main pointer forward.
+
+It needs to combine the changes from both branches.
+
+Git uses three commits as the basis of a three-way merge:
+1. Common ancestor (B).
+2. Latest commit on the current branch (D).
+3. Latest commit on the branch being merged (F).
+Git creates a new merge commit.
+
+After merging:
+          C ---- D --------\
+         /                  \
+A ---- B                    M
+         \                  /
+          E ---- F --------/
+
+                           M = Merge commit
+
+Important teaching point
+Fast-forward merge simply moves a branch pointer.
+
+Three-way merge combines divergent histories and normally creates a merge commit.
+PART 10 – Practical: Three-Way Merge
+Practical 4: Two Developers Working on the Same Project
+We will simulate two developers.
+Step 1. Create a repository
+mkdir three-way-lab
+cd three-way-lab
+git init
+
+Create a file:
+echo "Welcome to The Fairy Bake" > index.html
+
+Commit:
+git add .
+git commit -m "Initial website"
+
+Step 2. Create a feature branch
+git switch -c feature-menu
+
+Create a menu file:
+echo "Home | About | Contact" > menu.txt
+
+Commit:
+git add .
+git commit -m "Added navigation menu"
+
+Step 3. Switch to main
+git switch main
+
+Make another change:
+echo "Bakery business website" > description.txt
+
+Commit:
+git add .
+git commit -m "Added business description"
+
+Now both branches have different commits.
+
+Check:
+git log --oneline --graph --all
+
+Step 4. Merge the feature branch
+git merge feature-menu
+
+Git will create a merge commit because the branches have diverged.
+Step 5. Verify
+git log --oneline --graph --all
+
+You should see a merge commit connecting the two histories.
+
+Check:
+ls
+
+Both files should be present:
+index.html
+description.txt
+menu.txt
+
+Congratulations! Students have performed a three-way merge.
+PART 11 – Understanding Merge Conflicts
+This is the most important real-world practical.
+10. What is a Merge Conflict?
+A merge conflict occurs when Git cannot automatically reconcile changes from different branches.
+
+For example:
+
+Developer A changes:
+<h1>Welcome to The Fairy Bake</h1>
+
+Developer B changes the same line to:
+<h1>Welcome to The Fairy Bake Bakery</h1>
+
+Now both developers have modified the same portion of the same file.
+
+When Git attempts to merge the branches, it may not know which version should be retained.
+
+This creates a merge conflict.
+
+What does a conflict look like?
+When Git cannot automatically merge the file, you may see:
+<<<<<<< HEAD
+<h1>Welcome to The Fairy Bake</h1>
+=======
+<h1>Welcome to The Fairy Bake Bakery</h1>
+>>>>>>> feature
+
+Explain each marker:
+Marker	Meaning
+<<<<<<< HEAD	Beginning of the current branch's conflicting content
+=======	Separator between the two versions
+>>>>>>> feature	End of the incoming branch's conflicting content
+
+
+Important: These markers are inserted by Git to help the developer resolve the conflict. They are not valid HTML and must be removed before completing the merge.
+PART 12 – Practical: Resolve a Merge Conflict
+Practical 5: Real-World Conflict Resolution
+We will simulate two developers modifying the same file.
+Step 1. Create a new repository
+mkdir merge-conflict-lab
+cd merge-conflict-lab
+git init
+
+Step 2. Create an initial file
+echo "<h1>Welcome to The Fairy Bake</h1>" > index.html
+
+Commit:
+git add .
+git commit -m "Initial homepage"
+
+Step 3. Create Developer A's branch
+git switch -c developer-A
+
+Modify the file:
+nano index.html
+
+Change it to:
+<h1>Welcome to The Fairy Bake - Developer A</h1>
+
+Commit:
+git add .
+git commit -m "Updated homepage by Developer A"
+
+Step 4. Switch to main
+git switch main
+
+Step 5. Create Developer B's branch
+git switch -c developer-B
+
+Modify the same file:
+nano index.html
+
+Change it to:
+<h1>Welcome to The Fairy Bake - Developer B</h1>
+
+Commit:
+git add .
+git commit -m "Updated homepage by Developer B"
+
+Step 6. Merge Developer A into main
+git switch main
+git merge developer-A
+
+This should merge successfully.
+Step 7. Merge Developer B into main
+git merge developer-B
+
+Now Git should report a merge conflict because both branches modified the same line differently.
+
+Check:
+git status
+
+Expected observation:
+both modified: index.html
+
+Step 8. Open the conflicting file
+nano index.html
+
+You should see conflict markers similar to:
+<<<<<<< HEAD
+<h1>Welcome to The Fairy Bake - Developer A</h1>
+=======
+<h1>Welcome to The Fairy Bake - Developer B</h1>
+>>>>>>> developer-B
+
+Step 9. Resolve the conflict manually
+Tell students that they are now the project manager.
+
+They must decide which changes to keep.
+
+For example, they can combine both contributions:
+<h1>Welcome to The Fairy Bake</h1>
+
+<p>Homepage updated by Developer A and Developer B.</p>
+
+Save the file.
+Step 10. Stage the resolved file
+git add index.html
+
+Step 11. Complete the merge
+git commit -m "Resolved homepage merge conflict"
+
+Step 12. Verify
+git status
+git log --oneline --graph --all
+
+The merge is complete.
+
+Explain to students:
+
+Git does not decide which developer is correct. Developers must resolve conflicting changes according to project requirements.
+What if we want to cancel a merge?
+If a merge conflict occurs and we decide not to continue:
+git merge --abort
+
+This attempts to restore the pre-merge state.
+PART 13 – Detached HEAD State
+11. What is Detached HEAD?
+This is an intermediate-to-advanced concept.
+
+Normally:
+HEAD → main → Commit C
+
+HEAD points to the current branch.
+
+But suppose we check out a specific commit directly.
+git checkout <commit-id>
+
+Now:
+HEAD → Commit B
+
+main → Commit C
+
+HEAD is no longer attached to a branch.
+
+This is called Detached HEAD State.
+Why does it happen?
+Common reasons:
+- Checking out an old commit.
+- Inspecting an earlier project version.
+- Testing an earlier implementation.
+- Checking out a tag.
+Practical demonstration
+First:
+git log --oneline
+
+Copy an older commit ID.
+
+Now execute:
+git checkout <old-commit-id>
+
+Git will display a detached HEAD warning.
+
+Check:
+git status
+
+You are now inspecting an older commit.
+How to return to the branch?
+git switch main
+
+What if we want to save changes made in Detached HEAD?
+Suppose you make a modification and commit it while detached.
+
+If you simply switch away, that commit may eventually become unreachable.
+
+The safer approach is to create a branch:
+git switch -c recovery-branch
+
+Now your work has a branch reference.
+
+Important teaching point: Detached HEAD is not an error. It is simply a state in which HEAD points directly to a commit rather than following a branch.
+PART 14 – Git Merge vs Git Rebase
+This is an important interview and industry concept.
+12. What is Git Rebase?
+Git Rebase is used to replay commits from one branch onto another base commit.
+
+It helps create a more linear project history.
+
+Consider:
+          C ---- D       main
+         /
+A ---- B
+         \
+          E ---- F       feature
+
+The feature branch has commits E and F.
+
+Meanwhile, main has advanced to D.
+
+We want to bring the feature branch up to date with main.
+
+Using rebase:
+git switch feature
+git rebase main
+
+Git takes the feature commits and replays them on top of the latest main commit.
+
+Conceptually:
+A ---- B ---- C ---- D ---- E' ---- F'
+
+Notice:
+- E and F are recreated as E' and F'.
+- Their commit IDs change.
+- The project history becomes linear.
+Practical demonstration
+Create a fresh repository.
+mkdir rebase-lab
+cd rebase-lab
+git init
+
+Create an initial file:
+echo "Version 1" > app.txt
+git add .
+git commit -m "Initial commit"
+
+Create a feature branch:
+git switch -c feature
+
+Add a feature:
+echo "Feature implementation" >> app.txt
+git add .
+git commit -m "Added feature"
+
+Switch to main:
+git switch main
+
+Add another change:
+echo "Main branch update" > main.txt
+git add .
+git commit -m "Updated main branch"
+
+Switch back to feature:
+git switch feature
+
+Rebase:
+git rebase main
+
+Check:
+git log --oneline --graph --all
+
+Now feature commits have been replayed on top of main.
+
+If conflicts occur during rebase:
+git status
+
+Resolve the conflicting files, then:
+git add <filename>
+git rebase --continue
+
+To cancel:
+git rebase --abort
+
+Important: Avoid rebasing commits that have already been shared with other developers unless the team has explicitly agreed to rewrite that history.
+
+PART 15 – Git Merge vs Git Rebase
+Students must understand this comparison.
+
+| Feature | Git Merge | Git Rebase |
+| Purpose | Combine branch histories | Replay commits on another base |
+| History | Can preserve branching structure | Creates a linear history |
+| Merge commit | Often created for divergent branches | Normally not created |
+| Existing commit IDs | Preserved | Replayed commits receive new IDs |
+| Conflict handling | Resolve during merge | Resolve during replay |
+| Shared branches | Generally suitable | Requires caution |
+| Main advantage | Preserves historical context | Cleaner linear history |
+
+
+Which one should developers use?
+Use Merge when:
+- You want to preserve the history of how branches were integrated.
+- You are integrating shared feature branches.
+- You do not want to rewrite existing commit history.
+Use Rebase when:
+- You want to update a private feature branch with the latest main branch.
+- You want a linear commit history.
+- The commits have not yet been shared with others.
+A common professional workflow is:
+Developer creates feature branch
+          |
+          v
+Works on feature
+          |
+          v
+Updates feature using rebase
+          |
+          v
+Pushes feature branch
+          |
+          v
+Creates Pull Request
+          |
+          v
+Code Review
+          |
+          v
+Merge into main
+
+PART 16 – Complete Industry-Level Practical
+Now give students a practical that combines everything.
+Project: The Fairy Bake – Multi-Developer Development
+Scenario:
+
+A company is developing an online bakery website.
+
+Three developers are assigned different tasks.
+
+| Developer | Responsibility | Branch |
+| Developer A | Homepage | feature-homepage |
+| Developer B | About page | feature-about |
+| Developer C | Contact page | feature-contact |
+
+
+Step 1. Create repository
+mkdir fairy-bake-team
+cd fairy-bake-team
+git init
+
+Create:
+echo "The Fairy Bake Website" > README.md
+
+Commit:
+git add .
+git commit -m "Initial project setup"
+
+Step 2. Developer A creates homepage
+git switch -c feature-homepage
+
+Create:
+echo "<h1>Welcome to The Fairy Bake</h1>" > index.html
+
+Commit:
+git add .
+git commit -m "Developed homepage"
+
+Step 3. Developer B creates About page
+git switch main
+git switch -c feature-about
+
+Create:
+echo "<h1>About Our Bakery</h1>" > about.html
+
+Commit:
+git add .
+git commit -m "Developed about page"
+
+Step 4. Developer C creates Contact page
+git switch main
+git switch -c feature-contact
+
+Create:
+echo "<h1>Contact The Fairy Bake</h1>" > contact.html
+
+Commit:
+git add .
+git commit -m "Developed contact page"
+
+Step 5. Merge homepage
+git switch main
+git merge feature-homepage
+
+Step 6. Merge About page
+git merge feature-about
+
+Step 7. Merge Contact page
+git merge feature-contact
+
+Step 8. Check final project
+ls
+
+Expected:
+README.md
+index.html
+about.html
+contact.html
+
+Step 9. View complete history
+git log --oneline --graph --all --decorate
+
+All three developers' contributions are now integrated into main.
+
+Classroom discussion:
+
+Ask students:
+1. Why did we create separate branches?
+2. Why didn't we directly develop everything on main?
+3. What would happen if two developers modified the same line?
+4. What is the difference between Fast-Forward and Three-Way Merge?
+5. Why is Rebase different from Merge?
+
+PART 17 – Git Branching Cheat Sheet
+
+Ask students to maintain this command reference.
+
+| Command | Purpose |
+| `git branch` | List branches |
+| `git branch feature` | Create branch |
+| `git switch feature` | Switch branch |
+| `git switch -c feature` | Create and switch |
+| `git branch -m new-name` | Rename current branch |
+| `git branch -d feature` | Delete merged branch |
+| `git branch -D feature` | Force-delete branch |
+| `git branch -a` | List all branches |
+| `git merge feature` | Merge feature into current branch |
+| `git merge --abort` | Abort an in-progress merge |
+| `git log --graph --oneline --all` | Visualize commit history |
+| `git rebase main` | Rebase current branch onto main |
+| `git rebase --continue` | Continue rebase |
+| `git rebase --abort` | Abort rebase |
+| `git switch main` | Switch to main |
+| `git checkout <commit>` | Check out a specific commit |
+
