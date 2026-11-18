@@ -1,0 +1,444 @@
+Now we will go deeper into **Git Architecture and Git Fundamentals**.
+# SESSION 2: Understanding Git Architecture and Working Mechanism
+Objective: Students should understand how Git works internally and how it manages project versions.
+
+# PART 1 – Understanding Git Architecture
+
+## 1. What happens when we execute `git init`?
+Suppose we are developing a bakery website.
+Our project structure is:
+
+the-fairy-bake/
+│
+├── index.html
+├── about.html
+├── contact.html
+├── style.css
+└── script.js
+
+Initially, these are just normal files and folders.
+
+Now execute:
+git init
+
+What happens?
+
+Git creates a hidden directory named: 
+.git
+Our project becomes:
+
+the-fairy-bake/
+│
+├── .git/
+├── index.html
+├── about.html
+├── contact.html
+├── style.css
+└── script.js
+
+The `.git` directory is the internal database of the Git repository.
+It maintains the information required for version control, including:
+
+- Commit history.
+- Branch information.
+- Repository configuration.
+- File snapshots.
+- References.
+- Git objects.
+
+Let's inspect it.
+
+ls -la .git
+
+On Windows PowerShell:
+
+Get-ChildItem -Force .git
+
+Typical Git directory structure:
+
+.git/
+│
+├── HEAD
+├── config
+├── description
+├── hooks/
+├── info/
+├── objects/
+├── refs/
+└── index
+
+Let's understand each component.
+
+| Component | Purpose |
+| HEAD | Identifies the currently checked-out branch or commit |
+| config | Repository-specific configuration |
+| objects | Stores Git objects |
+| refs | Stores references to branches and tags |
+| hooks | Contains scripts that can run during Git events |
+| index | Maintains staging-area information |
+| info | Contains additional repository information |
+
+Important classroom question:
+What happens if we delete the `.git` directory?
+Answer: We remove the repository's local Git metadata and history. The project files generally remain, but Git no longer recognizes that directory as the same repository. This is an excellent way to explain the difference between a normal project folder and a Git repository.
+
+# PART 2 – Git's Three Important Areas
+
+This is arguably the most important concept in the entire Git course.
+Git uses three important areas:
+### 1. Working Directory
+The working directory is the location where developers create, modify and delete project files.
+
+For example:
+project/
+    index.html
+    style.css
+    app.js
+Suppose you open `index.html` and change:
+<h1>Welcome</h1>
+
+To:
+<h1>Welcome to The Fairy Bake</h1>
+
+You have modified the file.
+However, Git has not yet recorded this modification in a commit.
+
+### 2. Staging Area
+The staging area is where developers select the changes they want to include in their next commit.
+
+Command:
+git add index.html
+
+Now the changes are staged.
+
+Explain it using a real-life analogy:
+
+Imagine you are packing a school bag.
+
+- Working directory = Your entire room.
+- Staging area = The items you select to put in your bag.
+- Local repository = The completed record of what you have packed.
+
+You do not necessarily select everything in your room. Similarly, Git allows you to select specific changes for a commit.
+
+### 3. Local Repository
+The local repository stores committed snapshots of your project.
+
+Command:
+git commit -m "Updated homepage"
+
+Now Git records a new commit.
+
+### Complete Git workflow
+
+       WORKING DIRECTORY
+       (Modify files)
+              |
+              |
+           git add
+              |
+              v
+         STAGING AREA
+       (Select changes)
+              |
+              |
+          git commit
+              |
+              v
+       LOCAL REPOSITORY
+       (Commit history)
+
+Remember these three commands:
+
+| Command | Purpose |
+| `git status` | Checks the current state |
+| `git add` | Stages changes |
+| `git commit` | Records staged changes |
+
+# PART 3 – Understanding the Git File Lifecycle
+
+Now introduce another important concept: Git File Lifecycle.
+
+A file can be in different states.
+
+There are four important states.
+
+### State 1: Untracked
+
+A file exists in the project directory, but Git is not tracking it.
+
+Example:
+
+touch index.html
+Check:
+git status
+
+WE may see:
+
+Untracked files:
+    index.html
+Meaning: Git knows that this file exists, but it has not been added to the staging area.
+
+### State 2: Unmodified
+A file has been committed and has not been changed since its last commit.
+
+Example:
+
+git add index.html
+git commit -m "Added homepage"
+
+Now the file is committed and clean.
+
+### State 3: Modified
+
+Suppose we change the HTML file.
+
+<h1>Welcome to Git Training</h1>
+
+Check:
+git status
+
+Git reports that the file has been modified.
+
+Meaning: The current working-directory version differs from the committed version.
+
+### State 4: Staged
+
+Now execute:
+git add index.html
+
+The modification moves into the staging area.
+
+Git is now ready to include that version in the next commit.
+
+Important distinction:
+
+A file can be staged and then modified again.
+
+For example:
+
+1. Modify index.html.
+2. Execute `git add index.html`.
+3. Modify index.html again.
+
+Now the staged version and working-directory version are different.
+
+The first modification is staged, but the second modification is not.
+
+This is a very useful demonstration for students.
+
+# PART 4 – Live Practical: Understanding the Complete Git Workflow
+Now conduct this practical in front of students.
+
+## Practical 02: Create and Manage our First Git Repository
+
+Project: The Fairy Bake
+
+### Step 1. Create a project directory
+
+mkdir the-fairy-bake
+cd the-fairy-bake
+
+### Step 2. Initialize Git
+git init
+
+### Step 3. Create the first HTML file
+
+On Ubuntu:
+nano index.html
+
+On Windows PowerShell:
+notepad index.html
+
+Add:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Fairy Bake</title>
+</head>
+<body>
+
+    <h1>Welcome to The Fairy Bake</h1>
+
+    <p>Fresh cakes and bakery products.</p>
+
+</body>
+</html>
+
+Save the file.
+
+### Step 4. Check Git status
+git status
+
+Expected observation:
+Untracked files:
+    index.html
+    
+Explain why Git calls it untracked.
+
+### Step 5. Add the file
+git add index.html
+
+Check:
+git status
+
+Expected observation:
+Changes to be committed:
+    new file: index.html
+    
+### Step 6. Commit the file
+git commit -m "Initial bakery website"
+
+The expected output will indicate that a new commit was created.
+
+### Step 7. Verify commit history
+git log
+
+For a compact history:
+git log --oneline
+
+Example:
+a83f921 Initial bakery website
+
+Our commit ID will be different.
+
+Explain what a commit ID is.
+Every Git commit has a unique identifier generated using a cryptographic hash (SHA-1 by default, with SHA-256 also supported in newer Git repositories).
+
+This identifier helps Git identify and reference a particular commit.
+
+# PART 5 – Understanding Important Git Commands
+
+Now learn the commands individually.
+
+## 1. git status
+git status
+
+Purpose: Shows the current state of the working directory and staging area.
+Use it whenever we are unsure about what Git is tracking.
+
+## 2. git add
+git add index.html
+
+Stages a particular file.
+To stage all changes in the current directory:
+
+git add .
+
+To stage all tracked modifications and deletions, along with untracked files:
+
+git add -A
+
+Difference:
+
+| Command | Meaning |
+| `git add index.html` | Stage one file |
+| `git add .` | Stage changes under the current directory |
+| `git add -A` | Stage all changes in the working tree |
+
+## 3. git commit
+git commit -m "Added homepage"
+
+Creates a commit containing staged changes.
+
+Explain commit message best practices.
+
+Good examples:
+Added login functionality
+Updated homepage design
+Fixed navigation menu
+Added database connection
+
+Bad examples:
+Changes
+Update
+Hello
+Final
+Testing
+
+## 4. git log
+git log
+
+Shows commit history.
+
+Useful variations:
+
+git log --oneline
+git log --graph
+git log --all --oneline --decorate --graph
+
+The last command is particularly useful when students start learning branches.
+
+## 5. git diff
+
+This command is extremely important.
+
+Suppose we modify `index.html`:
+
+<h1>Welcome to The Fairy Bake</h1>
+<p>Fresh cakes and bakery products.</p>
+
+Change it to:
+
+<h1>Welcome to The Fairy Bake Bakery</h1>
+<p>Fresh cakes, cookies and bakery products.</p>
+
+Now execute:
+git diff
+
+Git displays the differences between the working directory and the staging area.
+
+You may see:
+
+-<h1>Welcome to The Fairy Bake</h1>
++<h1>Welcome to The Fairy Bake Bakery</h1>
+
+Explain:
+
+- `-` represents removed content.
+- `+` represents added content.
+
+Other useful variations:
+git diff --staged
+git diff HEAD
+
+| Command | Purpose |
+| `git diff` | Working directory vs staging area |
+| `git diff --staged` | Staging area vs last commit |
+| `git diff HEAD` | Working directory and staging area combined vs last commit |
+
+# PART 6 – Understanding Git Snapshots
+
+Many beginners think Git stores complete copies of files every time they commit.
+
+Git is better understood as a snapshot-based version control system.
+
+For example:
+
+Commit 1
+
+index.html
+style.css
+
+Commit 2
+
+index.html (modified)
+style.css
+
+Commit 3
+
+index.html (modified)
+style.css (modified)
+script.js (new)
+
+Each commit represents the state of the tracked project at that point in time.
+
+Internally, Git uses objects to represent and connect this information.
+
+There are four important Git object types:
+
+| Object | Purpose |
+| Blob | Stores file content |
+| Tree | Represents directory structure and references files/subdirectories |
+| Commit | Records a snapshot and metadata |
+| Tag | Provides a named reference to an object, commonly a commit |
