@@ -1,0 +1,1103 @@
+Level: Intermediate to Advanced
+Practical Project: The Fairy Bake – Bakery Application
+Environment: Windows PowerShell / Git Bash / Ubuntu
+
+Learning Objectives
+By the end of this session, students should understand:
+1. Git Stash.
+2. Git Stash: Apply, Pop, and Drop.
+3. Git Stash List.
+4. Git Cherry-Pick.
+5. Git Tags.
+6. Lightweight vs. Annotated Tags.
+7. Git Releases.
+8. Advanced Git Rebase.
+9. Interactive Rebase.
+10. Git Bisect.
+11. Git Blame.
+12. Git Clean.
+13. Git Hooks.
+14. Git Aliases.
+15. Git Submodules.
+16. Git LFS.
+
+PART 1 – Understanding Git Stash
+1. What is Git Stash?
+Start with a real-world scenario.
+
+Suppose a developer is working on a bakery website.
+
+The developer is currently working on the payment page.
+
+They have modified three files:
+fairy-bake/
+│
+├── index.html
+├── payment.html
+└── style.css
+
+Suddenly, the project manager says:
+
+"Stop working on the payment page. There is an urgent bug in the homepage. Fix it immediately."
+
+Now the developer has a problem.
+
+Their payment-page changes are incomplete.
+
+They don't want to commit incomplete code.
+
+They also don't want to lose their modifications.
+
+What should they do?
+
+Answer: Git Stash.
+Definition
+Git Stash temporarily saves changes from your working directory and staging area, allowing you to switch to another task without creating a commit.
+
+Think of Stash as a temporary storage area for unfinished work.
+Real-life analogy
+Imagine you are writing an assignment.
+
+Suddenly, your teacher asks you to complete another urgent assignment.
+
+You put your current assignment inside a folder, complete the urgent task and later resume your original assignment.
+
+Git Stash works similarly.
+Git Stash workflow
+Developer working on Feature A
+             |
+             |
+       Incomplete Changes
+             |
+             v
+          git stash
+             |
+             v
+     Changes temporarily saved
+             |
+             v
+       Switch to Feature B
+             |
+             v
+        Complete urgent work
+             |
+             v
+       Return to Feature A
+             |
+             v
+       git stash pop
+             |
+             v
+     Continue previous work
+
+     Practical 1 – Understanding Git Stash
+Step 1. Create a project
+mkdir git-stash-lab
+cd git-stash-lab
+
+git init
+
+Step 2. Create a file
+echo "Welcome to The Fairy Bake" > index.html
+
+Stage and commit:
+git add .
+git commit -m "Initial bakery website"
+
+Step 3. Modify the file
+echo "Adding payment functionality" >> index.html
+
+Check:
+git status
+
+You will see that the file has been modified.
+Step 4. Save the changes using Stash
+git stash
+
+Expected output will indicate that the working directory and index state have been saved.
+
+Check:
+git status
+
+The working directory should now be clean.
+
+Explain: The uncommitted modification has been temporarily saved in Git's stash.
+Step 5. View the stash
+git stash list
+
+Example:
+stash@{0}: WIP on main: abc1234 Initial bakery website
+
+Step 6. Restore the changes
+git stash pop
+
+Check:
+git status
+
+Your previous modifications should be restored.
+
+Important: git stash pop restores the latest stash and removes it from the stash list if the operation succeeds.
+PART 2 – Important Git Stash Commands
+Students must understand the difference between these commands.
+2. Git Stash List
+git stash list
+
+Displays all saved stashes.
+3. Git Stash Apply
+git stash apply
+
+Restores the latest stash but keeps it in the stash list.
+4. Git Stash Pop
+git stash pop
+
+Restores the latest stash and removes it from the stash list if successful.
+5. Git Stash Drop
+git stash drop
+
+Deletes the latest stash entry.
+6. Git Stash Clear
+git stash clear
+
+Deletes all stash entries.
+
+Warning: Stash clear is destructive. Do not demonstrate it on a student's important repository.
+7. Stashing with a message
+git stash push -m "Payment page incomplete"
+
+This makes it easier to identify saved work.
+8. Stashing untracked files
+By default, Git Stash does not include untracked files.
+
+To include them:
+git stash -u
+
+To include ignored files as well:
+git stash -a
+
+Be careful with -a, particularly when ignored files contain credentials or large generated files.
+Comparison table
+Command	Purpose
+git stash	Save tracked changes
+git stash -u	Save tracked and untracked changes
+git stash list	List stashes
+git stash apply	Restore without removing stash
+git stash pop	Restore and remove stash after success
+git stash drop	Delete one stash
+git stash clear	Delete all stashes
+git stash show -p	Display saved changes
+
+
+Classroom question
+A developer wants to restore saved changes but keep a copy in the stash.
+
+Which command should they use?
+
+Answer:
+git stash apply
+
+PART 3 – Understanding Git Cherry-Pick
+9. What is Git Cherry-Pick?
+This is an extremely useful command.
+
+Imagine that your development team has two branches:
+main
+feature-payment
+
+The developer working on feature-payment has completed three commits:
+1. Added payment page.
+2. Added payment validation.
+3. Fixed a small CSS issue.
+Now the project manager wants only the payment validation fix on the main branch.
+
+Should we merge the entire feature branch?
+
+No. We can use Git Cherry-Pick.
+Definition
+Git Cherry-Pick applies the changes introduced by an existing commit onto the current branch, creating a new commit.
+Real-life analogy
+Imagine a student has three assignments:
+- Assignment A.
+- Assignment B.
+- Assignment C.
+The teacher asks the student to submit only Assignment B.
+
+The student selects only that particular assignment.
+
+Cherry-picking works similarly.
+Visual explanation
+main:
+
+A ---- B ---- C
+
+
+feature:
+
+A ---- B ---- D ---- E ---- F
+
+Suppose we want only commit E on main.
+
+After Cherry-Pick:
+main:
+
+A ---- B ---- C ---- E'
+
+
+feature:
+
+A ---- B ---- D ---- E ---- F
+
+Notice that E' is a new commit containing the changes from E.
+
+Its commit ID will be different from the original E.
+Practical 2 – Git Cherry-Pick
+Step 1. Create a repository
+mkdir cherry-pick-lab
+cd cherry-pick-lab
+
+git init
+
+Step 2. Create the initial commit
+echo "Bakery Website" > index.html
+
+git add .
+git commit -m "Initial website"
+
+Step 3. Create a feature branch
+git switch -c feature-payment
+
+Step 4. Create three commits
+First:
+echo "Payment Page" > payment.html
+
+git add .
+git commit -m "Added payment page"
+
+Second:
+echo "Payment Validation" > validation.txt
+
+git add .
+git commit -m "Added payment validation"
+
+Third:
+echo "Payment Styling" > payment.css
+
+git add .
+git commit -m "Added payment styling"
+
+Step 5. View history
+git log --oneline
+
+Copy the commit ID for:
+Added payment validation
+
+Step 6. Switch to main
+git switch main
+
+Step 7. Cherry-pick the required commit
+git cherry-pick <commit-id>
+
+Step 8. Verify
+git log --oneline
+
+Check:
+ls
+
+You should see:
+index.html
+validation.txt
+
+The payment validation change has been applied to main without merging the entire feature branch.
+Important commands
+git cherry-pick <commit-id>
+
+Apply a specific commit.
+git cherry-pick --continue
+
+Continue after resolving a conflict.
+git cherry-pick --abort
+
+Cancel an in-progress cherry-pick.
+
+Important: Cherry-pick can introduce duplicate or overlapping changes if the same work is later merged through another route. Explain why teams coordinate selective commits carefully.
+PART 4 – Understanding Git Tags
+10. What is a Git Tag?
+Imagine your bakery application has reached its first stable version.
+
+The company wants to release it as:
+Version 1.0
+
+Later, it releases:
+Version 2.0
+
+How can developers mark important versions of their project?
+
+They use Git Tags.
+Definition
+A Git Tag is a named reference to a specific Git object, commonly a commit.
+
+Tags are frequently used to identify software releases.
+Real-life analogy
+Think of a textbook.
+
+The publisher releases:
+- Edition 1.
+- Edition 2.
+- Edition 3.
+Each edition represents an important version.
+
+Git Tags help identify important project versions.
+Visual explanation
+
+A ---- B ---- C ---- D ---- E
+          |           |
+         v1.0        v2.0
+
+Here:
+- v1.0 identifies commit C.
+- v2.0 identifies commit E.
+11. Types of Git Tags
+There are two important types.
+A. Lightweight Tag
+A lightweight tag is simply a reference to a commit.
+
+Command:
+git tag v1.0
+
+It does not store the full tag annotation and metadata.
+B. Annotated Tag
+An annotated tag stores additional information, including:
+- Tag name.
+- Tagger name.
+- Date.
+- Tag message.
+- Tag object metadata.
+Command:
+git tag -a v1.0 -m "Version 1.0 release"
+
+Comparison
+Lightweight Tag	Annotated Tag
+Simple reference	Full tag object
+No annotation message	Supports a message
+Minimal metadata	Stores tagger information and date
+Useful for temporary/private markers	Preferred for formal releases
+
+
+Teaching recommendation: Use annotated tags for formal software releases.
+Practical 3 – Creating Git Tags
+Create a project:
+mkdir git-tag-lab
+cd git-tag-lab
+
+git init
+
+Create a file:
+echo "The Fairy Bake Version 1" > index.html
+
+Commit:
+git add .
+git commit -m "Initial bakery release"
+
+Create an annotated tag:
+git tag -a v1.0 -m "First stable release"
+
+Check:
+git tag
+
+Expected:
+v1.0
+
+Inspect:
+git show v1.0
+
+Now modify the application:
+echo "Added product section" >> index.html
+
+Commit:
+git add .
+git commit -m "Added product section"
+
+Create another tag:
+git tag -a v2.0 -m "Second release"
+
+Check:
+git tag
+
+You should see:
+v1.0
+v2.0
+
+Additional Tag Commands
+List tags:
+git tag
+
+Create a lightweight tag:
+git tag v3.0
+
+Tag a specific commit:
+git tag -a v1.5 <commit-id> -m "Maintenance release"
+
+Delete a local tag:
+git tag -d v1.0
+
+Push one tag to GitHub:
+git push origin v2.0
+
+Push all local tags:
+git push origin --tags
+
+Important: A normal git push does not automatically push all local tags.
+PART 5 – Understanding GitHub Releases
+12. What is a GitHub Release?
+A Git tag identifies a point in Git history.
+
+A GitHub Release is a GitHub feature that packages and presents a particular version of a project for users.
+
+For example:
+The Fairy Bake
+
+Releases:
+
+v1.0 – Initial Release
+v2.0 – Added Product Section
+v3.0 – Added Payment Functionality
+
+Difference between Tag and Release
+Git Tag	GitHub Release
+Git reference	GitHub release-management feature
+Identifies a commit	Presents a project version
+Can be created locally	Managed on GitHub
+Can be pushed to remote	Can include release notes and downloadable assets
+
+
+Practical 4 – Create a GitHub Release
+1. Push your project to GitHub.
+2. Push the tag:
+git push origin v1.0
+
+3. Open the GitHub repository.
+4. Navigate to Releases.
+5. Select Draft a new release.
+6. Choose the tag v1.0.
+7. Enter release title:
+The Fairy Bake Version 1.0
+
+8. Add release notes.
+9. Publish the release.
+This is how software teams manage application versions.
+PART 6 – Understanding Advanced Git Rebase
+Students already learned basic rebase in Session 4.
+
+Now we will go deeper.
+13. What is Git Rebase?
+Git Rebase moves or replays, commits from one branch onto another base commit.
+
+Suppose:
+          C ---- D       main
+         /
+A ---- B
+         \
+          E ---- F       feature
+
+Main has moved forward.
+
+Feature was created earlier.
+
+We want the feature branch to incorporate the latest main changes while keeping a linear history.
+
+Execute:
+git switch feature
+git rebase main
+
+Conceptually, Git replays E and F on top of D.
+A ---- B ---- C ---- D ---- E' ---- F'
+
+Notice:
+- Original commits E and F are not simply moved.
+- Git creates new commits E' and F'.
+- Their commit IDs change.
+- The resulting history is linear.
+Why do developers use Rebase?
+1. Maintain a cleaner history.
+2. Incorporate recent changes from main.
+3. Avoid unnecessary merge commits.
+4. Prepare feature branches before Pull Requests.
+Merge vs Rebase
+Git Merge	Git Rebase
+Combines branch histories	Replays commits
+Can create merge commits	Usually creates linear history
+Preserves original commits	Replayed commits receive new IDs
+Good for integrating shared branches	Useful for updating private feature branches
+
+
+Important rule: Never casually rebase shared branches. It rewrites commit history and can disrupt collaborators.
+PART 7 – Understanding Interactive Rebase
+14. What is Interactive Rebase?
+This is a more advanced Git feature.
+
+Suppose a developer creates five commits:
+Added homepage
+Fixed typo
+Updated homepage
+Fixed CSS
+Added navigation
+
+The project manager asks the developer to clean up the commit history before submitting a Pull Request.
+
+Interactive Rebase allows developers to:
+- Reorder commits.
+- Change commit messages.
+- Combine commits.
+- Edit commits.
+- Drop commits.
+Command:
+git rebase -i HEAD~5
+
+This opens an editor containing the last five commits.
+
+You may see:
+pick a123456 Added homepage
+pick b234567 Fixed typo
+pick c345678 Updated homepage
+pick d456789 Fixed CSS
+pick e567890 Added navigation
+
+Important Interactive Rebase commands
+Command	Meaning
+pick	Keep the commit
+reword	Change the commit message
+edit	Stop and allow modification
+squash	Combine commit with previous commit
+fixup	Combine changes and discard the commit message
+drop	Remove the commit
+
+
+Practical demonstration
+Create five commits in a disposable repository.
+
+Then execute:
+git rebase -i HEAD~5
+
+Change the editor instructions to:
+pick a123456 Added homepage
+squash b234567 Fixed typo
+pick c345678 Updated homepage
+fixup d456789 Fixed CSS
+pick e567890 Added navigation
+
+Save and close the editor.
+
+Git will combine the selected commits.
+
+Check:
+git log --oneline
+
+You should see fewer commits.
+
+Warning: Interactive rebase rewrites history. Use it on your own unshared commits, not casually on commits already used by other developers.
+PART 8 – Understanding Git Bisect
+15. What is Git Bisect?
+Practical 5 – Find the Buggy Commit
+Create a repository:
+mkdir git-bisect-lab
+cd git-bisect-lab
+
+git init
+
+Create the first version:
+echo "Application working correctly" > app.txt
+
+git add .
+git commit -m "Working version"
+
+Create additional commits.
+echo "Feature 1" >> app.txt
+git add .
+git commit -m "Added feature 1"
+
+echo "Feature 2" >> app.txt
+git add .
+git commit -m "Added feature 2"
+
+Now introduce a bug:
+echo "BUG INTRODUCED" >> app.txt
+git add .
+git commit -m "Introduced bug"
+
+Create another commit:
+echo "Feature 3" >> app.txt
+git add .
+git commit -m "Added feature 3"
+
+Step 1. Start Bisect
+git bisect start
+
+Step 2. Mark the current version as bad
+git bisect bad
+
+Step 3. Identify a known good commit
+git log --oneline
+
+Copy the first working commit ID.
+
+Execute:
+git bisect good <good-commit-id>
+
+Git will select a commit for testing.
+Step 4. Test the selected version
+Inspect:
+cat app.txt
+
+If the application works:
+git bisect good
+
+If the application contains the bug:
+git bisect bad
+
+Repeat until Git identifies the first bad commit.
+Step 5. Finish Bisect
+git bisect reset
+
+This returns the repository to the previous checkout state.
+
+Teaching point: Git Bisect is particularly useful in large repositories where bugs are introduced somewhere in a long commit history.
+PART 9 – Understanding Git Blame
+16. What is Git Blame?
+Imagine you are debugging a project.
+
+You find this line:
+payment_status = "SUCCESS"
+
+
+You want to know:
+- Who introduced this line?
+- Which commit introduced it?
+- When was it changed?
+Use:
+git blame filename
+
+Git Blame displays line-by-line information about the last commit that modified each line.
+Practical 6 – Git Blame
+Create a file:
+nano app.py
+
+Add:
+name = "The Fairy Bake"location = "Delhi"payment_status = "PENDING"
+
+
+Commit:
+git add .
+git commit -m "Added application configuration"
+
+Modify one line:
+payment_status = "SUCCESS"
+
+
+Commit again:
+git add .
+git commit -m "Updated payment status"
+
+Now execute:
+git blame app.py
+
+You will see information such as:
+<commit-id> (Student Name 2026-11-18) name = "The Fairy Bake"
+<commit-id> (Student Name 2026-11-18) location = "Delhi"
+<commit-id> (Student Name 2026-11-18) payment_status = "SUCCESS"
+
+The actual output depends on the author and commit history.
+Important point
+Git Blame does not mean blaming a developer for mistakes.
+
+It is used to understand the history and origin of particular lines of code.
+
+PART 10 – Understanding Git Clean
+17. What is Git Clean?
+Suppose your project contains temporary files.
+project/
+│
+├── index.html
+├── app.py
+├── temp.txt
+├── debug.log
+└── backup/
+
+You do not want to commit these temporary files.
+
+Git Clean removes untracked files and directories.
+Important commands
+First preview what would be removed:
+git clean -n
+
+Remove untracked files:
+git clean -f
+
+Remove untracked files and directories:
+git clean -fd
+
+Remove ignored files as well:
+git clean -fdX
+
+Remove all untracked and ignored files:
+git clean -fdx
+
+Very important: Git Clean is destructive.
+
+Always use:
+git clean -n
+
+before executing the actual deletion command.
+
+It does not normally remove tracked files.
+PART 11 – Understanding Git Hooks
+18. What are Git Hooks?
+This is especially important for DevSecOps.
+
+Imagine your company wants to ensure that every developer follows certain rules.
+
+For example:
+- No commit should contain obvious passwords.
+- Every commit message should follow a standard.
+- Code formatting should be checked.
+- Tests should run before a commit is accepted.
+Can Git automatically execute scripts during certain Git operations?
+
+Yes.
+
+This is possible using Git Hooks.
+Definition
+Git Hooks are scripts that Git executes automatically at specific points in its workflow.
+
+Git stores sample hook files in:
+.git/hooks/
+
+Check:
+ls .git/hooks
+
+You may see:
+applypatch-msg.sample
+commit-msg.sample
+post-update.sample
+pre-commit.sample
+pre-push.sample
+prepare-commit-msg.sample
+
+These are sample files.
+Important Git Hooks
+
+| Hook | When it executes |
+| pre-commit | Before a commit is created |
+| prepare-commit-msg | Before the commit message editor opens |
+| commit-msg | After the message is prepared, before commit completes |
+| post-commit | After a commit completes |
+| pre-push | Before pushing to a remote |
+| post-checkout | After checking out a branch or commit |
+| post-merge | After a successful merge |
+
+Practical 7 – Create a Pre-Commit Hook
+We will create a simple hook that prevents commits containing a specific word in a file.
+
+Initialize a repository:
+mkdir git-hooks-lab
+cd git-hooks-lab
+
+git init
+
+Navigate to:
+.git/hooks/
+
+Create a file named:
+pre-commit
+
+On Ubuntu/Git Bash:
+nano .git/hooks/pre-commit
+
+Add:
+#!/bin/sh
+
+if grep -R -n --exclude-dir=.git "PASSWORD=" .; then
+    echo "ERROR: Potential hardcoded password found!"
+    echo "Commit blocked."
+    exit 1
+fi
+
+exit 0
+
+Save it.
+
+Make it executable:
+chmod +x .git/hooks/pre-commit
+
+Create a file:
+echo "PASSWORD=admin123" > config.txt
+
+Stage:
+git add .
+
+Try committing:
+git commit -m "Added configuration"
+
+The hook should block the commit.
+
+Now remove the problematic content:
+echo "APPLICATION=The Fairy Bake" > config.txt
+
+Stage again:
+git add config.txt
+
+Commit:
+git commit -m "Added application configuration"
+
+This time the commit should succeed.
+Important DevSecOps connection
+Git Hooks can be used for local quality checks, but they are not a complete security boundary.
+
+A developer can bypass local hooks.
+
+For stronger enforcement, use server-side controls, protected branches and CI/CD security checks.
+
+Also, this simple example is only a teaching demonstration, not a production-grade secret scanner.
+PART 12 – Understanding Git Aliases
+19. What is a Git Alias?
+Suppose developers frequently execute:
+git log --oneline --graph --all --decorate
+
+Typing this repeatedly is inconvenient.
+
+Git allows developers to create shortcuts called aliases.
+Practical 8 – Create Git Aliases
+Create an alias:
+git config --global alias.st status
+
+Now execute:
+git st
+
+Git executes:
+git status
+
+Create another:
+git config --global alias.co checkout
+
+Now:
+git co main
+
+Create a branch-switch alias:
+git config --global alias.sw switch
+
+Create a commit-history alias:
+git config --global alias.lg "log --oneline --graph --all --decorate"
+
+Now execute:
+git lg
+
+List configuration:
+git config --global --list
+
+Classroom question
+Can Git aliases improve developer productivity?
+
+Yes. They reduce repetitive typing and make common workflows faster.
+PART 13 – Understanding Git Submodules
+20. What is a Git Submodule?
+Suppose you are developing a large application.
+
+Your project depends on another Git repository.
+
+For example:
+ecommerce-project/
+│
+├── frontend/
+├── backend/
+└── common-library/
+
+The common-library is maintained separately in another Git repository.
+
+Instead of manually copying its code, you can include it as a Git Submodule.
+Definition
+A Git Submodule allows one Git repository to include another Git repository at a specific path and track a particular commit of that repository.
+Real-life example
+Your company has:
+- Main application repository.
+- Authentication library repository.
+- Payment library repository.
+The main application can reference the other repositories using submodules.
+Practical 9 – Create a Submodule
+First, create two repositories on GitHub:
+common-library
+main-application
+
+Assume common-library contains:
+common-library/
+    common.py
+
+Now clone the main application:
+git clone https://github.com/USERNAME/main-application.git
+cd main-application
+
+Add the common library:
+git submodule add https://github.com/USERNAME/common-library.git common-library
+
+Now check:
+ls
+
+You will see:
+main-application/
+│
+├── common-library/
+└── .gitmodules
+
+The .gitmodules file contains submodule configuration.
+
+Stage and commit:
+git add .
+git commit -m "Added common library submodule"
+git push
+
+How does another developer clone a project containing submodules?
+Use:
+git clone --recurse-submodules <repository-url>
+
+If already cloned:
+git submodule update --init --recursive
+
+Important teaching point
+A submodule does not simply copy the contents of another repository into the main repository.
+
+It records a reference to a specific commit of that external repository.
+PART 14 – Understanding Git LFS
+21. What is Git LFS?
+Git stands for Git Large File Storage.
+
+Imagine your project contains:
+project/
+│
+├── index.html
+├── style.css
+├── video.mp4
+├── product-demo.mov
+├── large-image.psd
+└── design-assets.zip
+
+Normal Git is optimized for tracking source-code changes, not repeatedly changing large binary files.
+
+Large binary files can make repositories difficult to manage.
+
+Git LFS helps manage these files.
+Definition
+Git LFS is an extension for Git that replaces large files in the repository with small pointer files while storing the actual file contents in a separate LFS storage system.
+
+How does Git LFS work?
+1. Developer installs Git LFS.
+2. Developer identifies large file types to track.
+3. Git LFS stores pointer files in Git history.
+4. Actual large file contents are stored in LFS storage.
+5. Git LFS retrieves the corresponding content when needed.
+Practical 10 – Git LFS
+First install Git LFS.
+
+Official website:
+
+https://git-lfs.com/
+
+On Ubuntu, installation is available through the official Git LFS package instructions.
+
+On Windows, download and install Git LFS.
+
+Initialize:
+git lfs install
+
+Tell Git LFS to track MP4 files:
+git lfs track "*.mp4"
+
+Check:
+cat .gitattributes
+
+You should see a tracking rule similar to:
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+
+Create or copy a video file:
+demo.mp4
+
+Stage:
+git add .gitattributes demo.mp4
+
+Commit:
+git commit -m "Added demo video using Git LFS"
+
+Push:
+git push
+
+Git LFS uploads the large content through the LFS mechanism, subject to the hosting provider's storage and bandwidth limits.
+Why use Git LFS?
+- Large video files.
+- Design files.
+- Game assets.
+- Audio files.
+- Large binary datasets.
+Important: Git LFS has storage and bandwidth limits depending on the hosting plan. Students should understand that Git LFS does not mean unlimited storage.
+PART 15 – Complete Advanced Git Practical
+Now combine the important concepts into one assignment.
+Project: The Fairy Bake – Advanced Version Management
+Scenario:
+
+You are developing an online bakery application.
+
+Your tasks:
+1. Create a Git repository.
+2. Make three commits.
+3. Modify a file.
+4. Save incomplete work using Git Stash.
+5. Restore the work.
+6. Create a separate branch.
+7. Cherry-pick a specific commit.
+8. Create an annotated tag.
+9. Create a GitHub Release.
+10. Perform interactive rebase.
+11. Identify a buggy commit using Bisect.
+12. Identify code authors using Blame.
+13. Clean temporary files.
+14. Create a pre-commit hook.
+15. Create Git aliases.
+16. Add a submodule.
+17. Track large files using Git LFS.
+Important command reference
+# STASH
+git stash
+git stash list
+git stash apply
+git stash pop
+
+# CHERRY PICK
+git cherry-pick <commit-id>
+
+# TAG
+git tag
+git tag -a v1.0 -m "First release"
+git push origin v1.0
+
+# REBASE
+git rebase main
+git rebase -i HEAD~3
+
+# BISECT
+git bisect start
+git bisect bad
+git bisect good <commit-id>
+git bisect reset
+
+# BLAME
+git blame app.py
+
+# CLEAN
+git clean -n
+git clean -f
+
+# ALIASES
+git config --global alias.st status
+git config --global alias.lg "log --oneline --graph --all"
+
+# SUBMODULE
+git submodule add <repository-url>
+
+# GIT LFS
+git lfs install
+git lfs track "*.mp4"
