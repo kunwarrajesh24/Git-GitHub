@@ -1,0 +1,994 @@
+## Forking, Cloning, Pull Requests, Code Reviews and Open-Source Contribution
+
+Practical Project: The Fairy Bake – Multi-Developer Website
+Environment: Windows PowerShell / Git Bash / Ubuntu
+
+Learning Objectives: 
+By the end of this session, students should be able to:
+1. Understand collaborative software development.
+2. Understand repository owners and collaborators.
+3. Manage repository permissions.
+4. Add collaborators to repositories.
+5. Understand Fork and Clone.
+6. Understand upstream repositories.
+7. Create feature branches.
+8. Push feature branches to GitHub.
+9. Understand Pull Requests.
+10. Create and review Pull Requests.
+11. Approve or request changes.
+12. Merge Pull Requests.
+13. Understand GitHub Issues.
+14. Manage labels and milestones.
+15. Understand open-source contributions.
+16. Resolve conflicts during collaborative development.
+
+ART 1 – Understanding Collaborative Development
+1. What is Collaborative Software Development?
+Start by asking your students:
+
+"Suppose a company wants to develop an application like Amazon. Can one developer independently develop the entire application?"
+
+Obviously, large applications require multiple developers.
+
+Consider an e-commerce application.
+
+The development team has five developers:
+
+| Developer | Responsibility |
+| Developer A | Homepage |
+| Developer B | Login and Registration |
+| Developer C | Shopping Cart |
+| Developer D | Payment Gateway |
+| Developer E | Database Integration |
+
+All developers are contributing to the same application.
+
+But here is the problem:
+
+How can we combine everyone's work without overwriting each other's code?
+
+This is where GitHub collaboration becomes important.
+Traditional development without GitHub
+
+Developer A ----\
+Developer B -----\
+Developer C ------> Manual Code Collection
+Developer D -----/          |
+Developer E ----/           |
+                             v
+                      Final Application
+
+Problems:
+- Code gets overwritten.
+- Developers maintain different versions.
+- Changes are difficult to track.
+- Bugs are difficult to identify.
+- Code review becomes difficult.
+
+Professional development using GitHub
+
+             PROJECT OWNER
+                   |
+                   v
+           GITHUB REPOSITORY
+                   |
+       ---------------------------
+       |            |            |
+       v            v            v
+   Developer A  Developer B  Developer C
+       |            |            |
+   Feature A    Feature B    Feature C
+       |            |            |
+       v            v            v
+   Pull Request Pull Request Pull Request
+       |            |            |
+       ---------------------------
+                   |
+                   v
+              CODE REVIEW
+                   |
+                   v
+              APPROVAL
+                   |
+                   v
+             MERGE INTO MAIN           
+
+ This is the professional collaboration workflow.
+
+Teaching point: Developers do not necessarily directly modify the main branch. They work on separate branches and propose their changes for review.
+PART 2 – Understanding Repository Owners and Collaborators
+2. What is a Repository Owner?
+The repository owner is the person or organization that owns and manages a GitHub repository.
+
+For example:
+GitHub Account: rajesh-devsecops
+
+Repositories:
+    |
+    |--- fairy-bake
+    |
+    |--- student-management
+    |
+    |--- devsecops-project
+
+The owner generally has administrative control over their repositories.
+3. What is a Collaborator?
+A collaborator is someone who has been granted access to contribute to a repository.
+
+For example:
+Repository Owner
+      |
+      v
+The Fairy Bake
+      |
+      |------ Developer A
+      |
+      |------ Developer B
+      |
+      |------ Developer C
+
+The owner can invite developers to collaborate.
+Practical 1: Add a Collaborator
+Ask one student to create a repository called:
+
+team-bakery-project
+
+Steps:
+1. Open the repository.
+2. Navigate to Settings.
+3. Open Collaborators or the access-management section.
+4. Select Add people.
+5. Enter another student's GitHub username.
+6. Send the invitation.
+7. Ask the other student to accept the invitation.
+Now the second student has been granted access.
+
+The exact permission level depends on the access granted.
+Understanding GitHub Repository Permissions
+GitHub provides different repository roles.
+
+| Role | Permissions |
+| Read | View and clone repository |
+| Triage | Manage issues and Pull Requests without writing code |
+| Write | Push code and manage development work |
+| Maintain | Manage repository without full administrative control |
+| Admin | Full repository administration |
+
+Important: Give students only the permissions necessary for their responsibilities.
+
+Official documentation: GitHub repository roles and permissions
+
+PART 3 – Understanding Forking
+4. What is Forking in GitHub?
+This is one of the most important concepts in GitHub collaboration.
+
+Suppose you find an interesting project on GitHub.
+
+The repository belongs to another developer.
+
+You want to contribute to that project, but you do not have permission to push directly into the original repository.
+
+What will you do?
+
+You create a Fork.
+
+Definition:
+
+A Fork is a GitHub-hosted copy of another repository under your own GitHub account or organization.
+
+It allows you to independently develop and propose changes to the original project.
+Real-life example
+Suppose Developer A owns:
+github.com/developerA/bakery-project
+
+Developer B wants to contribute.
+
+Developer B creates a fork:
+github.com/developerB/bakery-project
+
+Now two GitHub repositories exist.
+          ORIGINAL REPOSITORY
+          Developer A Account
+                   |
+                   |
+                 FORK
+                   |
+                   v
+          FORKED REPOSITORY
+          Developer B Account
+
+Developer B can now:
+- Clone their fork.
+- Create branches.
+- Modify code.
+- Commit changes.
+- Push changes to their fork.
+- Submit a Pull Request to the original repository.
+Why is Forking important?
+1. Contributing to open-source projects.
+2. Working on projects without direct write permission.
+3. Experimenting with existing code.
+4. Developing features independently.
+5. Proposing changes to original project maintainers.
+Important: A fork is a GitHub-level repository copy, not the same thing as creating a local branch.
+PART 4 – Fork vs Clone
+Students frequently confuse these two terms.
+
+Explain them carefully.
+5. What is the difference between Fork and Clone?
+
+| Fork | Clone |
+| Creates a GitHub-hosted copy | Creates a local copy |
+| Performed through GitHub | Usually performed using Git |
+| Creates a repository under your account | Creates a directory on your computer |
+| Commonly used for external contributions | Used to obtain a working copy |
+| Maintains a relationship with the upstream repository on GitHub | Downloads repository history locally |
+
+       ORIGINAL GITHUB REPOSITORY
+                  |
+                  |
+                FORK
+                  |
+                  v
+         YOUR GITHUB REPOSITORY
+                  |
+                  |
+                CLONE
+                  |
+                  v
+          YOUR LOCAL COMPUTER
+
+Remember:
+
+Fork = Copy on GitHub.
+
+Clone = Copy on your local computer.
+
+A developer can fork a repository without cloning it immediately, and can clone a repository without forking it.
+PART 5 – Practical: Fork and Clone a Repository
+Practical 2: Contribute to Another Developer's Project
+We will simulate an open-source contribution.
+Step 1. Create an original repository
+Developer A creates a GitHub repository:
+
+open-source-bakery
+
+Add these files:
+open-source-bakery/
+│
+├── index.html
+├── about.html
+└── README.md
+
+Create index.html:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open Source Bakery</title>
+</head>
+<body>
+
+    <h1>Welcome to Our Bakery</h1>
+
+</body>
+</html>
+
+Commit and push the files.
+Step 2. Developer B forks the repository
+Developer B opens Developer A's repository.
+
+Click:
+
+Fork → Create a new fork
+
+GitHub creates:
+github.com/DeveloperB/open-source-bakery
+
+Step 3. Developer B clones the fork
+On Developer B's computer:
+git clone https://github.com/DeveloperB/open-source-bakery.git
+
+Enter the project directory:
+cd open-source-bakery
+
+Step 4. Verify the remote
+git remote -v
+
+Expected:
+origin  https://github.com/DeveloperB/open-source-bakery.git (fetch)
+origin  https://github.com/DeveloperB/open-source-bakery.git (push)
+
+Explain:
+
+origin points to Developer B's fork, not the original repository.
+PART 6 – Understanding Upstream Repository
+6. What is Upstream?
+This is another important concept.
+
+Suppose Developer B has forked Developer A's repository.
+
+Now Developer A makes new changes in the original repository.
+
+Developer B wants to download those changes.
+
+How can Developer B connect to the original repository?
+
+We use another remote, conventionally called upstream.
+Understand the architecture
+        ORIGINAL REPOSITORY
+         Developer A
+                |
+                |
+             upstream
+                |
+                v
+        FORKED REPOSITORY
+         Developer B
+                |
+                |
+              origin
+                |
+                v
+         LOCAL COMPUTER
+
+More precisely:
+- origin refers to Developer B's fork.
+- upstream refers to Developer A's original repository.
+Practical 3: Configure Upstream
+On Developer B's computer:
+git remote add upstream https://github.com/DeveloperA/open-source-bakery.git
+
+Check:
+git remote -v
+
+Expected:
+origin    https://github.com/DeveloperB/open-source-bakery.git (fetch)
+origin    https://github.com/DeveloperB/open-source-bakery.git (push)
+
+upstream  https://github.com/DeveloperA/open-source-bakery.git (fetch)
+upstream  https://github.com/DeveloperA/open-source-bakery.git (push)
+
+Now Developer B has two remotes.
+Step 1. Fetch original repository changes
+git fetch upstream
+
+This downloads the latest information from the original repository.
+Step 2. Switch to main
+git switch main
+
+Step 3. Integrate upstream changes
+git merge upstream/main
+
+Step 4. Update your fork
+git push origin main
+
+Now Developer B's fork is synchronized with the original repository, assuming the merge completed successfully.
+
+Important teaching point: Upstream is a conventional remote name. Git does not require the remote to be named upstream.
+PART 7 – Understanding Pull Requests
+7. What is a Pull Request?
+Now we come to the heart of today's session.
+
+Suppose Developer B has developed a new feature in their fork.
+
+How can Developer B ask Developer A to include those changes in the original repository?
+
+The answer is a Pull Request.
+
+Definition:
+
+A Pull Request (PR) is a GitHub collaboration mechanism through which a developer proposes changes to a repository and requests that those changes be reviewed and integrated.
+Real-life analogy
+Imagine a student preparing an assignment.
+
+The student completes the assignment and submits it to the teacher.
+
+The teacher:
+1. Opens the assignment.
+2. Reviews the content.
+3. Suggests corrections.
+4. Approves the assignment.
+5. Accepts the final submission.
+A Pull Request follows a similar process.
+
+Pull Request workflow
+Developer
+    |
+    v
+Create Feature Branch
+    |
+    v
+Write Code
+    |
+    v
+Commit Changes
+    |
+    v
+Push Feature Branch
+    |
+    v
+Create Pull Request
+    |
+    v
+Code Review
+    |
+    v
+Approval / Changes Requested
+    |
+    v
+Merge Pull Request
+    |
+    v
+Main Branch Updated
+
+Important distinction
+A Pull Request is not the same as git pull.
+
+Pull Request	Git Pull
+| Pull Request | Git Pull |
+| GitHub collaboration feature | Git command |
+| Proposes changes for review | Retrieves and integrates remote changes |
+| Supports comments and approvals | Does not provide a formal review process |
+| Used in collaborative development | Used for repository synchronization |
+
+PART 8 – Practical: Create Your First Pull Request
+Practical 4: Two Students Working on One Project
+This is the most important practical of this session.
+
+Arrange two students on separate computers.
+Roles
+
+| Student | Role |
+| Student A | Repository Owner |
+| Student B | Contributor |
+
+We will use The Fairy Bake project.
+Step 1. Student A creates a repository
+Create a GitHub repository:
+
+fairy-bake-collaboration
+
+Add:
+fairy-bake-collaboration/
+│
+├── index.html
+└── README.md
+
+In index.html:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Fairy Bake</title>
+</head>
+<body>
+
+    <h1>Welcome to The Fairy Bake</h1>
+
+</body>
+</html>
+
+Commit the initial files.
+Step 2. Student B forks the repository
+Student B opens Student A's repository.
+
+Click:
+Fork → Create a new fork
+
+Now Student B has a fork.
+Step 3. Student B clones the fork
+git clone https://github.com/STUDENT-B/fairy-bake-collaboration.git
+
+cd fairy-bake-collaboration
+
+Step 4. Create a feature branch
+git switch -c feature-product-section
+
+Explain:
+
+Student B should not make this contribution directly on the main branch.
+Step 5. Add a new feature
+Create:
+
+products.html
+
+Add:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Our Products</title>
+</head>
+<body>
+
+    <h1>Our Bakery Products</h1>
+
+    <h2>Chocolate Cake</h2>
+    <p>Fresh chocolate cake.</p>
+
+    <h2>Vanilla Cake</h2>
+    <p>Fresh vanilla cake.</p>
+
+</body>
+</html>
+
+Step 6. Stage and commit
+git add .
+git commit -m "Added bakery products page"
+
+Step 7. Push the feature branch
+git push -u origin feature-product-section
+
+Now the feature branch exists in Student B's GitHub fork.
+Step 8. Create a Pull Request
+Student B opens their fork on GitHub.
+
+GitHub may display a Compare & pull request button.
+
+Click it.
+
+Review the Pull Request configuration:
+Field	Value
+Base repository	Student A's original repository
+Base branch	main
+Head repository	Student B's fork
+Compare branch	feature-product-section
+
+
+Explain this carefully.
+
+Base repository: Where we want the changes to go.
+
+Head repository: Where the proposed changes currently exist.
+
+The direction is:
+Student B's Fork
+       |
+       | feature-product-section
+       |
+       v
+Student A's Original Repository
+       |
+       | main
+       |
+       v
+    Pull Request
+
+Step 9. Add Pull Request information
+Title:
+Added bakery products page
+
+Description:
+This Pull Request introduces a new products page.
+
+Changes:
+- Added Chocolate Cake section.
+- Added Vanilla Cake section.
+- Created products.html.
+
+Click:
+
+Create Pull Request
+
+Congratulations! Student B has submitted the first Pull Request.
+PART 9 – Understanding Code Review
+8. What is Code Review?
+Code Review is the process of examining another developer's code before integrating it into the main project.
+
+Why is code review necessary?
+
+Suppose Developer B submits code containing:
+password = "admin123"
+
+
+Or writes code with logical errors.
+
+If the project owner merges the code without checking it, security and functionality problems may enter the application.
+
+Code Review helps identify:
+- Programming errors.
+- Security vulnerabilities.
+- Poor coding practices.
+- Performance problems.
+- Duplicate code.
+- Missing documentation.
+- Incorrect functionality.
+Who performs code reviews?
+Typically:
+- Senior developers.
+- Team leads.
+- Project maintainers.
+- Authorized reviewers.
+Practical 5: Review a Pull Request
+Student A opens the Pull Request created by Student B.
+
+Navigate to:
+
+Pull Requests → Select the Pull Request → Files changed
+
+Student A can now inspect the code.
+
+The reviewer can:
+1. View changed files.
+2. Examine added and removed lines.
+3. Add comments.
+4. Suggest improvements.
+5. Approve changes.
+6. Request changes.
+Example review comment
+Please add a navigation menu to products.html
+so users can navigate back to the homepage.
+
+Student B receives the feedback.
+
+Student B modifies the file:
+<nav>
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+</nav>
+
+Then:
+git add products.html
+git commit -m "Added navigation menu"
+git push
+
+The existing Pull Request updates automatically because it tracks the pushed feature branch.
+
+This is an important concept to demonstrate.
+
+A Pull Request does not need to be recreated every time the developer makes corrections.
+PART 10 – Approving and Merging Pull Requests
+9. What does Approve mean?
+When a reviewer is satisfied with the submitted code, they can approve the Pull Request.
+
+GitHub provides different review outcomes.
+Review option	Meaning
+Comment	Provide feedback without approving or requesting changes
+Approve	Accept the proposed changes
+Request changes	Ask the contributor to make modifications
+
+
+Practical 6: Approve the Pull Request
+Student A:
+1. Opens the Pull Request.
+2. Selects the Files changed tab.
+3. Clicks Review changes.
+4. Selects Approve.
+5. Submits the review.
+Now Student A can merge the Pull Request, provided repository rules and required checks are satisfied.
+Important: Merge Pull Request
+GitHub commonly provides three merge strategies.
+1. Create a Merge Commit
+Creates a merge commit to combine the changes.
+
+This preserves the branch integration history.
+2. Squash and Merge
+Combines all commits from the Pull Request into one commit on the base branch.
+
+Useful when a feature branch contains many small development commits.
+3. Rebase and Merge
+Replays the commits onto the base branch without creating a traditional merge commit.
+
+It produces a linear history.
+Comparison
+Strategy	Result
+Merge Commit	Preserves branch history
+Squash and Merge	Combines PR commits into one
+Rebase and Merge	Replays commits onto base branch
+
+
+After selecting the appropriate method, click:
+
+Merge Pull Request → Confirm Merge
+
+The changes are now integrated into Student A's main branch.
+What happens next?
+Student A's repository now contains:
+fairy-bake-collaboration/
+│
+├── index.html
+├── README.md
+└── products.html
+
+The Pull Request is merged.
+
+This is how professional GitHub collaboration works.
+PART 11 – Understanding GitHub Issues
+10. What is a GitHub Issue?
+Suppose users are reporting problems in your bakery application.
+
+Examples:
+- Homepage is not loading.
+- Contact page is missing.
+- Product images are not displaying.
+- Login button is not working.
+- Mobile layout is broken.
+How can the development team record and manage these problems?
+
+GitHub provides a feature called Issues.
+
+Definition:
+
+A GitHub Issue is used to track bugs, feature requests, improvements, tasks and discussions related to a repository.
+What can we do with GitHub Issues?
+1. Report bugs.
+2. Request new features.
+3. Assign tasks to developers.
+4. Add labels.
+5. Set milestones.
+6. Discuss problems.
+7. Reference commits and Pull Requests.
+8. Track project progress.
+Practical 7: Create Your First Issue
+Open:
+
+fairy-bake-collaboration
+
+Navigate to:
+
+Issues → New Issue
+
+Create:
+
+Title:
+Homepage is not mobile responsive
+
+Description:
+Problem:
+The homepage does not display correctly on mobile devices.
+
+Expected Result:
+The homepage should automatically adjust
+to different screen sizes.
+
+Priority:
+High
+
+Click:
+
+Create Issue
+
+Now your project has its first tracked issue.
+PART 12 – Understanding Labels
+11. What are GitHub Labels?
+Labels help classify issues and Pull Requests.
+
+For example:
+Label	Meaning
+bug	Something is not working
+enhancement	Improvement to existing functionality
+feature	New functionality
+documentation	Documentation-related task
+security	Security-related work
+good first issue	Suitable for beginners
+help wanted	Additional contributions needed
+
+
+Practical
+Open an Issue.
+
+Click Labels.
+
+Add:
+bug
+priority-high
+frontend
+
+Now the development team can identify the nature and priority of the issue.
+
+Teaching point: Labels help teams organize work, particularly when repositories contain hundreds of issues.
+PART 13 – Understanding Milestones
+12. What is a GitHub Milestone?
+A milestone is used to group issues and Pull Requests associated with a particular project goal or release.
+
+Imagine your bakery application has three development phases.
+Milestone	Objective
+Version 1.0	Homepage and About page
+Version 2.0	Login and Registration
+Version 3.0	Payment Gateway
+
+
+Each milestone can contain multiple issues and Pull Requests.
+Practical 8: Create a Milestone
+In your repository:
+1. Open Issues.
+2. Find Milestones.
+3. Select New Milestone.
+4. Enter the title:
+Bakery Website Version 1.0
+
+5. Add a description:
+Complete the initial bakery website.
+
+6. Set a due date if required.
+7. Create the milestone.
+8. Assign relevant issues to it.
+Now the team can track progress toward Version 1.0.
+PART 14 – Understanding Open-Source Contribution
+This is one of the most valuable skills students can learn.
+13. What is Open Source?
+Open-source software is software whose source code is made available under a license that allows others to use, inspect, modify and redistribute it according to the license terms.
+
+Examples include:
+- Linux.
+- Kubernetes.
+- Docker-related open-source projects.
+- Git.
+- Python.
+Students can contribute to these projects.
+How does an open-source contribution work?
+
+Find Open Source Project
+          |
+          v
+        Fork
+          |
+          v
+        Clone
+          |
+          v
+    Create Branch
+          |
+          v
+    Modify Source Code
+          |
+          v
+        Commit
+          |
+          v
+        Push
+          |
+          v
+    Create Pull Request
+          |
+          v
+    Maintainer Reviews
+          |
+          v
+      PR Accepted
+
+      PART 15 – Resolving Conflicts During Collaboration
+Students already learned merge conflicts in Session 4.
+
+Now explain how conflicts occur in the GitHub Pull Request workflow.
+Scenario
+Developer A changes:
+<h1>Welcome to The Fairy Bake</h1>
+
+Developer B changes:
+<h1>Welcome to The Fairy Bake Bakery</h1>
+
+Both modify the same line in separate branches.
+
+Developer A merges their changes into main.
+
+Developer B then creates a Pull Request using their outdated branch.
+
+GitHub may indicate that the Pull Request has conflicts that must be resolved before merging.
+How can Developer B resolve the conflict?
+First, fetch the latest original repository changes:
+git fetch upstream
+
+Switch to the feature branch:
+git switch feature-product-section
+
+Rebase it onto the latest main:
+git rebase upstream/main
+
+If a conflict occurs:
+git status
+
+Open the conflicting file and resolve the conflict manually.
+
+Then:
+git add index.html
+git rebase --continue
+
+After a successful rebase, push the updated feature branch:
+git push --force-with-lease origin feature-product-section
+
+Important security and collaboration note: --force-with-lease rewrites the remote feature branch. Use it only when you own that branch or have coordinated with its contributors. It is safer than plain --force, but it is still a history-rewriting operation.
+
+Alternatively, teams can merge the latest upstream main into the feature branch instead of rebasing.
+PART 16 – Complete Industry-Level Practical
+Now conduct one complete practical involving two students.
+Project: The Fairy Bake – Collaborative Development
+Objective: Simulate a real software development team.
+Team structure
+Student	Role	Responsibility
+Student A	Project Owner	Manage main repository
+Student B	Developer	Develop product page
+Student C	Developer	Develop contact page
+
+
+Step 1. Student A creates the repository
+Repository name:
+fairy-bake-team
+
+Add:
+index.html
+README.md
+
+Step 2. Student B forks the repository
+Student B creates a fork.
+Step 3. Student C gets collaborator access
+Student A invites Student C to the original repository with appropriate permissions.
+Step 4. Student B clones the fork
+git clone https://github.com/STUDENT-B/fairy-bake-team.git
+cd fairy-bake-team
+
+Step 5. Student B creates a branch
+git switch -c feature-products
+
+Step 6. Student B develops the product page
+<h1>Our Bakery Products</h1>
+
+<ul>
+    <li>Chocolate Cake</li>
+    <li>Vanilla Cake</li>
+    <li>Black Forest Cake</li>
+</ul>
+
+Commit and push:
+git add .
+git commit -m "Added bakery products"
+git push -u origin feature-products
+
+Step 7. Student B creates a Pull Request
+Target:
+Original repository: fairy-bake-team
+Base branch: main
+
+Fork: Student B's fairy-bake-team
+Compare branch: feature-products
+
+Step 8. Student A reviews the Pull Request
+Student A checks the code and adds comments if necessary.
+Step 9. Student B makes corrections
+Student B pushes additional commits.
+Step 10. Student A approves and merges
+Student A merges the Pull Request.
+Step 11. Student C creates an Issue
+Student C reports:
+Contact page is missing.
+
+Step 12. Student C develops the feature
+Student C creates:
+git switch -c feature-contact
+
+Develops contact.html, commits and pushes.
+
+If Student C is working through a collaborator workflow, they can push the branch directly to the original repository. If working through a fork, they should push to their fork and create a Pull Request.
+Step 13. Create a Pull Request
+Student C requests that their contact page be merged.
+Step 14. Final project
+The final repository should contain:
+fairy-bake-team/
+│
+├── index.html
+├── products.html
+├── contact.html
+└── README.md
+
+The project should also contain:
+- At least two Pull Requests.
+- At least one reviewed Pull Request.
+- At least one Issue.
+- Appropriate labels.
+- One milestone.
+This practical demonstrates the complete collaboration workflow.
+PART 17 – Important GitHub Collaboration Commands
+Command	Purpose
+git clone URL	Clone a repository
+git remote -v	View remote repositories
+git remote add upstream URL	Add original repository
+git fetch upstream	Fetch original repository changes
+git switch -c feature	Create feature branch
+git add .	Stage changes
+git commit -m "message"	Commit changes
+git push -u origin feature	Push feature branch
+git pull	Fetch and integrate changes
+git merge upstream/main	Merge original main branch
+git rebase upstream/main	Rebase current branch onto upstream main
+
+
+Remember that Pull Requests, Issues, labels and milestones are primarily managed through GitHub's interface or its APIs, not through these basic Git commands.
+
